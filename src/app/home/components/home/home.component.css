@@ -1,0 +1,41 @@
+
+.toolbar-item-spacer {
+    flex: 1 1 auto;
+}
+
+.app-container {
+    height: 90%;
+    margin: 0;
+}  
+.app-sidenav {
+  width: max-content;
+     background-color: #005290;
+  
+}
+.app-sidenav-content {
+    display: flex;
+    height: 100vh !important;
+    align-items: center;
+    justify-content: center;
+} 
+
+.app-fondo {
+    background-color: #005290;
+    color: white;
+    font-weight: 500;
+
+   
+
+}
+
+.app-slide-nav {
+
+  width: 450px;
+ 
+
+}
+
+.body{
+    display: grid;
+    height: 100%;
+}

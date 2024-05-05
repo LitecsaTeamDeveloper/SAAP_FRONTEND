@@ -1,0 +1,44 @@
+
+  <mat-card>
+    <mat-card-content>
+      <div class="header" style="display: flex; justify-content: center;">
+        <div class="columna">
+          <img src="../../../../assets/img/usuario2.png" width="40px" height="40px" >
+        </div>
+        <div class="columna">
+          <h2 class="card-title text-center">Inicie sesión</h2>
+        </div>
+      </div>
+      <form name="loginForm" [formGroup]="loginForm">
+        <div class="login">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Usuario</mat-label>
+            <input
+              formControlName="usuario"
+              matInput
+              placeholder="Escriba su usuario" required
+            />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input 
+                formControlName="password"
+                matInput [type]="hide ? 'password' : 'text'" 
+                placeholder="Escriba su password"  required
+            >
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>          
+        </div>
+        <button mat-fab extended color="primary" [disabled]="loginForm.invalid" (click) = "ingresar()">
+          <mat-icon>meeting_room</mat-icon>
+          Ingresar
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+

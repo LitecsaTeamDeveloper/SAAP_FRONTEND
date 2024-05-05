@@ -1,0 +1,98 @@
+<mat-toolbar color="primary" class="mat-elevation-z8">
+    <button (click)="drawer.toggle()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span> S A A P </span>
+    <span class="toolbar-item-spacer"></span>
+    <!-- <button mat-icon-button matTooltip="Notificaciones">
+        <mat-icon>notifications</mat-icon>
+    </button> -->
+    <h1>Bienvenido: {{ nombreUsuario }}</h1>
+    <button mat-icon-button matTooltip="Mi Cuenta" [matMenuTriggerFor]="userAccountMenu">
+        <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
+        <button mat-menu-item routerLink="#">
+            <mat-icon>person</mat-icon><span>Mi Cuenta</span>
+        </button>
+        <!-- <button mat-menu-item routerLink="#">
+            <mat-icon>settings</mat-icon><span>Configuración</span>
+        </button> -->
+        <button mat-menu-item routerLink="#">
+            <mat-icon>help</mat-icon><span>Ayuda</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="#">
+            <mat-icon>exit_to_app</mat-icon>Cerrar sesión
+        </button>
+    </mat-menu>
+    <span class="fill-remaining-space"></span>
+    <!-- <button routerLink="" mat-button>Home</button>
+    <button [matMenuTriggerFor]="lvl1master" mat-button>Master</button>
+    <mat-menu #lvl1master="matMenu">
+        <button [matMenuTriggerFor]="company" mat-menu-item>Company</button>
+        <button [matMenuTriggerFor]="customer" mat-menu-item>Customer</button>
+        <button [matMenuTriggerFor]="product" mat-menu-item>Product</button>
+    </mat-menu> -->
+
+    <!-- <mat-menu #company="matMenu">
+        <button mat-menu-item>Term</button>
+        <button mat-menu-item>Tax</button>
+        <button mat-menu-item>Currency</button>
+    </mat-menu>
+    <mat-menu #customer="matMenu">
+        <button mat-menu-item>Type</button>
+        <button mat-menu-item>Tax</button>
+    </mat-menu>
+    <mat-menu #product="matMenu">
+        <button mat-menu-item>Category</button>
+        <button [matMenuTriggerFor]="variant" mat-menu-item>Variant</button>
+        <button mat-menu-item>UOM</button>
+    </mat-menu>
+
+    <mat-menu #variant="matMenu">
+        <button mat-menu-item>Color</button>
+        <button mat-menu-item>Size</button>
+    </mat-menu>
+
+    <button routerLink="input" mat-button>Input</button>
+    <button routerLink="autocomplete" mat-button>Autocomplete</button>
+    <a href="https://www.youtube.com/channel/UCsbmVmB_or8sVLLEq4XhE_A/join" mat-raised-button color="accent">Join Us</a>
+    <button (click)="badgevisibility()"  mat-icon-button>
+        <mat-icon matBadgeColor="accent" matBadge="15" [matBadgeHidden]="badgevisible" matBadgeSize="small">notifications</mat-icon>
+    </button> -->
+</mat-toolbar>
+<mat-drawer-container autosize>
+    <mat-drawer #drawer opened="true" mode="side" position="start">
+    <mat-nav-list>
+        <!-- <mat-list-item>
+            <button routerLink="card" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
+        </mat-list-item> -->
+        <mat-list-item>
+            <button routerLink="inicio" mat-button><mat-icon>home</mat-icon> Inicio</button>
+        </mat-list-item>
+        
+        <mat-list-item>
+            <!-- <button routerLink="fallas" mat-button><mat-icon><img src="../../assets/imagenes/catalogo.png" width="20px" height="20px"></mat-icon> Catalogos</button> -->
+            <button routerLink="catalogo" mat-button><mat-icon>library_books</mat-icon> Catalogos</button>
+        </mat-list-item>
+        <mat-list-item>
+            <button routerLink="inventario" mat-button><mat-icon>inventory</mat-icon> Inventario</button>
+        </mat-list-item>
+        <mat-list-item>
+            <button mat-button><mat-icon>engineering</mat-icon> Operación</button>
+        </mat-list-item>
+        <mat-list-item>
+        <button mat-button><mat-icon>build</mat-icon> Mantenimiento</button>
+        </mat-list-item>
+        <mat-list-item>
+            <button mat-button><mat-icon>bar_chart_4_bars</mat-icon> Reportes</button>
+        </mat-list-item>
+    </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div style="text-align: center;min-height: 600px; background-color: aliceblue;">
+            <router-outlet></router-outlet>
+            </div>
+    </mat-drawer-content>
+</mat-drawer-container>
