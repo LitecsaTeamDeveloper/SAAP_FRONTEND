@@ -31,6 +31,9 @@ import { CatalogosComponent } from './catalogos/catalogos.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './shared/interceptor//loading.interceptor';
+import { DialogBoxComponent } from './shared/component/dialog-box/dialog-box.component';
+import { AlertBoxComponent } from './shared/component/alert-box/alert-box.component';
+import { AltainventarioComponent } from './inventario/components/altainventario/altainventario.component';
 
 
 @NgModule({
@@ -41,7 +44,10 @@ import { LoadingInterceptor } from './shared/interceptor//loading.interceptor';
     FallasComponent,
     InicioComponent,
     CatalogosComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    DialogBoxComponent,
+    AlertBoxComponent,
+    AltainventarioComponent
   ],
   imports: [
     BrowserModule,

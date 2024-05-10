@@ -1,0 +1,7 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content>
+  <ng-container *ngComponentOutlet="content"></ng-container>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">Cerrar</button>
+</mat-dialog-actions>

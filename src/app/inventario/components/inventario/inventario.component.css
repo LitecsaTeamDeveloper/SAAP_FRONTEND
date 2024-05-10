@@ -1,0 +1,24 @@
+ .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+
+    
+  } 
+  
+  input {
+    /* flex-grow: 1; */
+    
+    width: 200px;
+    
+    
+  }
+  
+  button {
+    padding: 0px 0px;
+    height: 30px;
+    width: 30px;
+  }
+
+ 

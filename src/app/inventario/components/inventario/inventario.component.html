@@ -1,4 +1,34 @@
+<br>
+<mat-card >
 <div class="table-container mat-elevation-z8">
+  <div class="row">
+    <div class="container">
+    <mat-form-field appearance="outline">
+      <!-- <mat-label>Buscar</mat-label> -->
+      <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." >
+      <button matSuffix mat-icon-button color="primary">
+        <mat-icon class="search-icon" >search</mat-icon>
+        <ng-template #elseBlock>
+          <mat-icon class="search-icon">close</mat-icon>
+        </ng-template>
+      </button>
+    </mat-form-field>  
+    <div></div>
+    <div></div>
+    <div></div>
+    <button mat-mini-fab matTooltip="Agregar tramo" color="primary" (click)="openAlta()">
+      <mat-icon>add</mat-icon>
+    </button>
+    &nbsp;
+    </div>
+
+  </div>
+
+<div class="row">
+
+<div class="table-container mat-elevation-z8">
+  <mat-card>
+  
     <table mat-table [dataSource]="dataSource" class="mat-table">
       <!-- Columna ID -->
       <ng-container matColumnDef="id">
@@ -26,7 +56,7 @@
           <button mat-icon-button color="primary" [matTooltip]="'Editar ' + usuario.nombre">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" [matTooltip]="'Eliminar ' + usuario.nombre">
+          <button mat-icon-button color="warn" (click)="openDeleteDialog(1)" [matTooltip]="'Eliminar ' + usuario.nombre">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -36,4 +66,24 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <!-- <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator> -->
+    <!-- <mat-paginator [length]="200" [pageSizeOptions]="[5, 10, 20]" aria-label="Select page"> </mat-paginator> -->
+    <!-- <mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="handlePageEvent($event)"
+>
+</mat-paginator> -->
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]"
+showFirstLastButtons
+aria-label="Select page of periodic elements">
+</mat-paginator>
+
+</mat-card>
+    
   </div>
+</div>
+</div>
+</mat-card>

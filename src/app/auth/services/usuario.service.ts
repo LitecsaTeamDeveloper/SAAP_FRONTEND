@@ -1,19 +1,19 @@
-//import { server } from '../../../../enviroments';
 import { Injectable, Optional, Inject } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpResponse, HttpEvent } from '@angular/common/http';
-// import { BASE_PATH } from 'app/constants/variables';
 import { Observable } from 'rxjs';
 import { LoadingService } from '../../shared/services/loading.service';
 import { finalize } from 'rxjs/operators';
-
+import { API_URL } from '../../shared/constant';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UsuarioService {
 
-private urlApi = 'http://localhost:5057/api/Usuario/validausuario'
+//private urlApi = 'http://localhost:5057/api/Usuario/validausuario'
 //private urlApi = 'http://localhost:5057/api/Usuario/listausuario'
+
+private urlApi = API_URL;
 
     // public defaultHeaders = new HttpHeaders();
     // public configuration = new Configuration();
@@ -25,7 +25,11 @@ private urlApi = 'http://localhost:5057/api/Usuario/validausuario'
     public getUsuarios(cuerpo:any): Observable<any> {
         const headers = new HttpHeaders().set('Content-Type', 'application/json');
         const body = JSON.stringify(cuerpo);
-        return this.httpClient.post<any>(this.urlApi, body, { headers: headers });
+        return this.httpClient.post<any>(`${this.urlApi}/Usuario/validausuario`, body, { headers: headers });
+    }
+
+    public getInventario(): Observable<any> {
+        return this.httpClient.get<any>(`${this.urlApi}/Inventario/listainventario`);
     }
 
     // public getUsuarios(cuerpo:any): Observable<any> {

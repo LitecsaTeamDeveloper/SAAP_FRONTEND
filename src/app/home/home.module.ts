@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PruebaComponent } from './prueba/prueba/prueba.component';
 import { MenuComponent } from '../menu/menu.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PaginatorEspanol } from '../shared/model/paginatorEspanol.model';
 
 // Material Angular
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -25,14 +26,20 @@ import {MatBadgeModule} from "@angular/material/badge";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorIntl} from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     PruebaComponent,
-    MenuComponent
-    
+    MenuComponent,
+        
   ],
   imports: [
     CommonModule,
@@ -54,7 +61,13 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatBadgeModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+
   ],
   exports: [
     MatSlideToggleModule,
@@ -74,7 +87,17 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatBadgeModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useClass: PaginatorEspanol }
   ]
+
 })
 export class HomeModule { }

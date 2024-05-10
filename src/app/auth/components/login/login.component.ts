@@ -45,14 +45,16 @@ export class LoginComponent implements OnInit {
     // } else {
     //   this.initForm();
     // }
-   
-  }
+   console.log('ENTRO AL LOGIN');
+    }
 
   getUsuario(usuario:any, pwd: any) {
     const body = {
       usuario: usuario,
       password: pwd
     };
+
+    console.log (body);
 
     this.usuarioService.getUsuarios(body).subscribe(data => {
     this.usuarios = data;
