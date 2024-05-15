@@ -10,15 +10,24 @@
   input {
     /* flex-grow: 1; */
     
-    width: 200px;
+    /* width: 200px; */
+    display: table-cell;
+    width: 800px;
     
     
   }
   
-  button {
+  /* button {
     padding: 0px 0px;
     height: 30px;
     width: 30px;
+  } */
+
+  .hidden-column {
+    display: none;
   }
 
- 
+  .formaboton {
+    display: table-cell;
+    max-width: 400px;
+  }

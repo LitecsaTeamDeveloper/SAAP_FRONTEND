@@ -58,10 +58,11 @@ export class LoginComponent implements OnInit {
 
     this.usuarioService.getUsuarios(body).subscribe(data => {
     this.usuarios = data;
-    console.log (this.usuarios);
+    console.log ('objeto usuarios en login: ', this.usuarios);
  
     if (this.usuarios.valido) {
       this.sharedService.nombreUsuario = this.usuarios.nombre;
+      this.sharedService.companiaUsuario = this.usuarios.idCompania;
       this.router.navigate(['home']);
     } else {
       this.error();

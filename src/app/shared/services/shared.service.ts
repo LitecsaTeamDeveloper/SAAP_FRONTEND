@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 
 export class SharedService {
   private _nombreUsuario!: string;
+  private _companiaUsuario!: number;
 
   constructor() { }
 
@@ -16,4 +17,13 @@ export class SharedService {
   get nombreUsuario(): string {
     return this._nombreUsuario;
   }
+
+  set companiaUsuario(idCompania: number) {
+    this._companiaUsuario = idCompania;
+  }
+
+  get companiaUsuario(): number {
+    return this._companiaUsuario;
+  }
+
 }

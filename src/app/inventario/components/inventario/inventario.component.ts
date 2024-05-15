@@ -7,36 +7,33 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../shared/component/dialog-box/dialog-box.component';
 import { AltainventarioComponent } from '../altainventario/altainventario.component';
 import { InventarioService } from '../../services/inventario.service';
+import { SharedService } from '../../../shared/services/shared.service';
+import { catchError } from 'rxjs/operators';
 
-export interface Usuario {
-  id: number;
-  nombre: string;
-  email: string;
+
+export interface Inventario {
+    idInventario:  number; 
+    rfid:  string; 
+    idNumeroParte:  number; 
+    numeroParte:  string; 
+    idCompania:  number; 
+    compania:  string; 
+    descripcion:  string; 
+    idDiametroInterior:  number; 
+    diametroInterior:  string; 
+    idDiametroExterior:  number; 
+    diametroExterior:  string; 
+    longitud:  number; 
+    idUbicacion:  number; 
+    ubicacion:  string; 
+    idRango:  number; 
+    rango: string ; 
+    esNuevo:  boolean; 
+    bending:  number; 
+    idEstatus:  number; 
+    estatus:  string; 
+    fechaIngreso:  Date; 
 }
-
-const datausuario: Usuario[] = [
-  { id: 1, nombre: 'gallina 1', email: 'usuario1@example.com' },
-  { id: 2, nombre: 'perro 2', email: 'usuario2@example.com' },
-  { id: 3, nombre: 'Usuario 3', email: 'usuario3@gmail.com' },
-  { id: 4, nombre: 'Usuario 4', email: 'usuario4@example.com' },
-  { id: 5, nombre: 'gato 5', email: 'usuario5@example.com' },
-  { id: 6, nombre: 'Usuario 6', email: 'usuario6@gmail.com' },
-  { id: 7, nombre: 'puerco 7', email: 'usuario7@outlook.com' },
-  { id: 8, nombre: 'Usuario 8', email: 'usuario8@example.com' },
-  { id: 9, nombre: 'caballo 9', email: 'usuario9@example.com' },
-  { id: 10, nombre: 'gallo 10', email: 'usuario10@gmail.com' },
-  { id: 11, nombre: 'gallina 11', email: 'usuario1@example.com' },
-  { id: 12, nombre: 'perro 12', email: 'usuario2@yahoo.com' },
-  { id: 13, nombre: 'Usuario 13', email: 'usuario3@example.com' },
-  { id: 14, nombre: 'Usuario 14', email: 'usuario4@example.com' },
-  { id: 15, nombre: 'gato 15', email: 'usuario5@example.com' },
-  { id: 16, nombre: 'Usuario 16', email: 'usuario6@yahoo.com' },
-  { id: 17, nombre: 'puerco 17', email: 'usuario7@example.com' },
-  { id: 18, nombre: 'Usuario 18', email: 'usuario8@example.com' },
-  { id: 19, nombre: 'caballo 19', email: 'usuario9@yahoo.com' },
-  { id: 20, nombre: 'gallo 20', email: 'usuario10@example.com' }  
-];
-
 
 @Component({
   selector: 'app-inventario',
@@ -44,12 +41,19 @@ const datausuario: Usuario[] = [
   styleUrl: './inventario.component.css'
 })
 export class InventarioComponent implements OnInit{
-  displayedColumns: string[] = ['id', 'nombre', 'email', 'acciones'];
+  // displayedColumns: string[] = ['id', 'rfid', 'idnumeroparte', 'numeroparte', 'idcompania', 'compania', 'descripcion', 'iddi', 'di', 'idde', 'de', 'longitud', 'idubicacion', 'ubicacion', 'idrango', 'rango', 'esnuevo', 'bending', 'idestatus', 'estatus', 'fechaingreso', 'acciones'];
+  displayedColumns: string[] = ['id', 'rfid', 'numeroparte', 'descripcion','acciones'];
+  columnIndex = { idNumeroParte: 2 }; 
   @ViewChild(MatPaginator) paginatior !:MatPaginator;
-  dataSource: MatTableDataSource<Usuario>;
+ 
+  dataSource: MatTableDataSource<Inventario>;
 
   searchTerm: string = ''; // Término de búsqueda
   value: string = '';
+
+   datainventario: Inventario[]=[];
+
+   companiaUsuario: number = 0;
 
     // Propiedades para la paginación
     length = 100; // Número total de elementos
@@ -62,40 +66,44 @@ export class InventarioComponent implements OnInit{
 
   constructor(private alertService: AlertService
               , private inventarioServices: InventarioService
-              , private dialogBox: MatDialog)
+              , private dialogBox: MatDialog
+              , private sharedService: SharedService)
  {
-    this.dataSource = new MatTableDataSource<Usuario>([]);
+    
+    this.dataSource = new MatTableDataSource<Inventario>([]);
     this.dataSource.paginator=this.paginatior;
 
     
   }
 
   ngOnInit(): void {
-    // Aquí puedes obtener los datos de la API y asignarlos a this.dataSource.data
-    this.dataSource.data = datausuario;
-    this.getInventario();
+    //this.dataSource.data = datausuario;
+    this.companiaUsuario = this.sharedService.companiaUsuario;
+    this.getInventario(this.companiaUsuario);
     
   }
 
 
 
-  handlePageEvent(event: PageEvent) {
-    this.dataSource.data = datausuario;
-    this.length = event.length;
-    this.pageSize = event.pageSize;
-    const startIndex = event.pageIndex * event.pageSize;
-    const endIndex = startIndex + event.pageSize;
-    this.dataSource.data = this.dataSource.data.slice(startIndex, endIndex);
-  }
+  // handlePageEvent(event: PageEvent) {
+  //   this.dataSource.data = datausuario;
+  //   this.length = event.length;
+  //   this.pageSize = event.pageSize;
+  //   const startIndex = event.pageIndex * event.pageSize;
+  //   const endIndex = startIndex + event.pageSize;
+  //   this.dataSource.data = this.dataSource.data.slice(startIndex, endIndex);
+  // }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDeleteDialog(len: number): void {
+  openDeleteDialog(dato: any): void {
+    console.log(dato);
     const options = {
       title: 'SAAP',
-      message: `¿Esta seguro de eliminar el tramo ${len}?`,
+      message: `¿Esta seguro de eliminar el tramo: ` + dato.descripcion + ' ?',
       cancelText: 'NO',
       confirmText: 'SI'
     };
@@ -123,13 +131,36 @@ export class InventarioComponent implements OnInit{
     });
   }
 
-  getInventario() {
 
-let listainventario: any;
-    this.inventarioServices.getInventario().subscribe(data => {
-      listainventario = data;
-    console.log (listainventario);
- 
-    })
+  
+
+  getInventario(compania: number) {
+    let listainventario: any;
+    this.inventarioServices.getInventario(compania).pipe(
+      catchError(error => {
+        // Manejo del error
+        console.log('Error en la solicitud objeto general:', error.error);
+        console.log('Error en la solicitud:', error.status);
+        // Aquí puedes mostrar un mensaje de error al usuario o realizar cualquier otra acción necesaria.
+        throw error; // Lanzar el error para que siga propagándose
+      })
+    ).subscribe(
+      data => {
+        this.datainventario = data;
+        this.dataSource.data = this.datainventario;
+        console.log(this.datainventario);
+      }
+    );
   }
+  
+  // getInventario(compania: number) {
+
+  // let listainventario: any;
+  //   this.inventarioServices.getInventario(compania).subscribe(data => {
+  //   this.datainventario = data;
+  //   this.dataSource.data = this.datainventario;
+  //   console.log (this.datainventario);
+ 
+  //   })
+  // }
 }

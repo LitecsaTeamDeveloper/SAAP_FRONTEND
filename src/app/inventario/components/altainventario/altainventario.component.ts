@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DialogBoxService } from '../../../shared/services/dialog-box.service';
 
 @Component({
   selector: 'app-altainventario',
@@ -17,7 +18,7 @@ export class AltainventarioComponent implements OnInit {
   gradosOpciones: string[] = ['Grado 1', 'Grado 2', 'Grado 3'];
   rangosOpciones: string[] = ['Rango A', 'Rango B', 'Rango C'];
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private dialogBoxService: DialogBoxService) { }
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
@@ -41,7 +42,7 @@ export class AltainventarioComponent implements OnInit {
     console.log(this.formGroup.value);
   }
 
-  cerrar() {
-    // Lógica para cerrar el formulario
+  cerrar(): void {
+    this.dialogBoxService.closeDialog();
   }
 }

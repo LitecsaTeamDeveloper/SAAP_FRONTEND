@@ -14,8 +14,8 @@ private urlApi = API_URL;
 
     constructor(protected httpClient: HttpClient, private loadingService: LoadingService ) {   }
 
-    public getInventario(): Observable<any> {
-        return this.httpClient.get<any>(`${this.urlApi}/Inventario/listainventario`);
+    public getInventario(compania: number): Observable<any> {
+        return this.httpClient.get<any>(`${this.urlApi}/Inventario/listainventario/${compania}`);
     }
 
 
