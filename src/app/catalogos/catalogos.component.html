@@ -1,154 +1,23 @@
-<!-- <p>catalogos works!</p> -->
 
-<div class="mat-elevation-z8">
+    <mat-grid-list cols="2" rowHeight="50px">
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Elemento 1</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            Contenido del elemento 1
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Elemento 2</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            Contenido del elemento 2
+          </mat-card-content>
+        </mat-card>
 
-    <div class="prl15 pt10">
-  
-      <div fxLayout="row wrap">
-        <h3 class="mat-h3">TechNetzz Mat Table</h3>
-      </div>
-  
-      <div fxLayout="row wrap" class="text-center" fxLayoutAlign="space-between stretch">
-  
-        <div fxFlex="20" fxFlex.lt-md="100" class="mb5">
-          <mat-form-field class="form-fields">
-            <mat-label>Select a Country</mat-label>
-            <!-- <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onSelectCountry()">
-              <mat-option value="all">All</mat-option>
-              <mat-option *ngFor="let country of dataSource.data" [value]="country.country">
-                {{country.country}}
-              </mat-option>
-            </mat-select> -->
-          </mat-form-field>
-        </div>
-  
-        <div fxFlex="45" fxFlex.lt-md="100" class="mb5">
-          <mat-form-field class="w-100">
-            <input matInput type="text"  placeholder="Search here..."
-              >
-            <button matSuffix mat-icon-button color="primary">
-              <mat-icon class="search-icon" >close</mat-icon>
-              <ng-template #elseBlock>
-                <mat-icon class="search-icon">search</mat-icon>
-              </ng-template>
-            </button>
-          </mat-form-field>
-        </div>
-  
-        <div fxFlex="30" fxFlex.lt-md="100" class="mb5">
-          <div fxLayout="row wrap" fxLayoutAlign="space-between stretch">
-            <div fxFlex="20">
-              <button mat-mini-fab color="primary"  matTooltip="Agregar tubo">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-  
-            <div fxFlex="20">
-              <button mat-mini-fab color="primary"  matTooltip="Show/Hide columns">
-                <mat-icon>remove_red_eye</mat-icon>
-              </button>
-            </div>
-  
-            <div fxFlex="20">
-              <button mat-mini-fab color="primary"
-                         matTooltip="Delete selected row/s">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-  
-            <div fxFlex="20">
-
-
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <div fxLayout="row wrap" [@animation] class="mb5">
-        <div fxFlex="20" fxFlex.lt-sm="50" >
-          <!-- <mat-checkbox >
-            label checkbox
-          </mat-checkbox> -->
-        </div>
-      </div>
-  
-    </div>
-  
-    <div class="responsive-table">
-      <table mat-table matTableExporter
-        matSort>
-  
-
-  
-        <ng-container matColumnDef="flag">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Flag</th>
-          <td mat-cell *matCellDef="let element">
-            <img src="{{element.countryInfo.flag}}" width="20px">
-          </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="country">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Country Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.country}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="cases">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Cases </th>
-          <td mat-cell *matCellDef="let element"> {{element.cases}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="todayCases">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Today Cases </th>
-          <td mat-cell *matCellDef="let element"> {{element.todayCases}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="deaths">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Death </th>
-          <td mat-cell *matCellDef="let element"> {{element.deaths}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="todayDeaths">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Today Death </th>
-          <td mat-cell *matCellDef="let element"> {{element.todayDeaths}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="recovered">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Recovered </th>
-          <td mat-cell *matCellDef="let element"> {{element.recovered}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="active">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
-          <td mat-cell *matCellDef="let element"> {{element.active}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef>Action</th>
-          <td mat-cell *matCellDef="let row">
-  
-            <button mat-icon-button color="primary"  matTooltip="Edit row">
-              <mat-icon>edit</mat-icon>
-            </button>
-  
-            <button mat-icon-button color="primary"  matTooltip="Delete row">
-              <mat-icon>delete</mat-icon>
-            </button>
-  
-          </td>
-        </ng-container>
-  
-        <!-- <tr mat-header-row *matHeaderRowDef="disColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: disColumns;"></tr> -->
-      </table>
-  
-      <!-- <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
-        <mat-progress-spinner color="primary" mode="indeterminate">
-        </mat-progress-spinner>
-      </mat-card> -->
-  
-    </div>
-  
-    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
-  
-  </div>
   

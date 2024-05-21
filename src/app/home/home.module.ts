@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './components/home/home.component';
-import { PruebaComponent } from './prueba/prueba/prueba.component';
 import { MenuComponent } from '../menu/menu.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PaginatorEspanol } from '../shared/model/paginatorEspanol.model';
 
 // Material Angular
@@ -32,12 +32,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    PruebaComponent,
     MenuComponent,
         
   ],
@@ -66,7 +65,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatDialogModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatGridListModule,
+    FormsModule
 
   ],
   exports: [
@@ -92,7 +93,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatDialogModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatGridListModule,
+    FormsModule
 
   ],
   providers: [

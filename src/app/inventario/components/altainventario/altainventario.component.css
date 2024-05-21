@@ -1,0 +1,18 @@
+.field-left {
+    margin-right: 10px; 
+  }
+  
+  .field-right {
+    margin-left: 10px; 
+  }
+
+  .wide {
+    width: 400px; 
+  }
+
+.custom-slide-toggle html .mat-mdc-slide-toggle.mat-accent{
+  background-color: #1976d2;
+}
+.custom-slide-toggle.mat-checked html .mat-mdc-slide-toggle.mat-accent {
+  background-color: #1976d2; 
+}

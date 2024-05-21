@@ -1,12 +1,14 @@
-// Collection of reusable RegExps
+
 export const regExps: { [key: string]: RegExp } = {
     str: /^[a-zA-Z]/, // Validates only strings
     num: /^\d+$/, // Validates only numbers
+    numdecimales: /^\d+(\.\d{1,2})?$/
 };
 
-// Collection of reusable error messages
+// Modulo inventario
 export const errorMessages: { [key: string]: string } = {
-    country: 'Required and only strings',
+    longitud: 'solo decimales (4.2)',
+    bending: 'solo decimales (4.2)',
     cases: 'Required and only numbers',
     todayCases: 'Required and only numbers',
     deaths: 'Required and only numbers',

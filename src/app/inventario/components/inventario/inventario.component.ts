@@ -9,31 +9,11 @@ import { AltainventarioComponent } from '../altainventario/altainventario.compon
 import { InventarioService } from '../../services/inventario.service';
 import { SharedService } from '../../../shared/services/shared.service';
 import { catchError } from 'rxjs/operators';
+import {Inventario } from '../../model/inventario.model'
+//import { ToastrService } from 'ngx-toastr';
 
 
-export interface Inventario {
-    idInventario:  number; 
-    rfid:  string; 
-    idNumeroParte:  number; 
-    numeroParte:  string; 
-    idCompania:  number; 
-    compania:  string; 
-    descripcion:  string; 
-    idDiametroInterior:  number; 
-    diametroInterior:  string; 
-    idDiametroExterior:  number; 
-    diametroExterior:  string; 
-    longitud:  number; 
-    idUbicacion:  number; 
-    ubicacion:  string; 
-    idRango:  number; 
-    rango: string ; 
-    esNuevo:  boolean; 
-    bending:  number; 
-    idEstatus:  number; 
-    estatus:  string; 
-    fechaIngreso:  Date; 
-}
+
 
 @Component({
   selector: 'app-inventario',
@@ -67,7 +47,8 @@ export class InventarioComponent implements OnInit{
   constructor(private alertService: AlertService
               , private inventarioServices: InventarioService
               , private dialogBox: MatDialog
-              , private sharedService: SharedService)
+              , private sharedService: SharedService
+              )
  {
     
     this.dataSource = new MatTableDataSource<Inventario>([]);
@@ -140,6 +121,7 @@ export class InventarioComponent implements OnInit{
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
+        //this.toastr.error('Se produjo un error al obtener el inventario: ' + error.error, 'SAAP - Error');
         console.log('Error en la solicitud:', error.status);
         // Aquí puedes mostrar un mensaje de error al usuario o realizar cualquier otra acción necesaria.
         throw error; // Lanzar el error para que siga propagándose
