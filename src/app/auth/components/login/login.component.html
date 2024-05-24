@@ -13,7 +13,7 @@
         <div class="login">
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Usuario</mat-label>
-            <input
+            <input maxlength="25"
               formControlName="usuario"
               matInput
               placeholder="Escriba su usuario" required
@@ -24,7 +24,7 @@
         <div>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Password</mat-label>
-            <input 
+            <input maxlength="25"
                 formControlName="password"
                 matInput [type]="hide ? 'password' : 'text'" 
                 placeholder="Escriba su password"  required

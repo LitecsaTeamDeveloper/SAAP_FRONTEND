@@ -6,6 +6,7 @@ import { AlertService } from '../../../shared/services/alert.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../shared/component/dialog-box/dialog-box.component';
 import { AltainventarioComponent } from '../altainventario/altainventario.component';
+import { EditainventarioComponent } from '../editainventario/editainventario.component';
 import { InventarioService } from '../../services/inventario.service';
 import { SharedService } from '../../../shared/services/shared.service';
 import { catchError } from 'rxjs/operators';
@@ -22,7 +23,7 @@ import {Inventario } from '../../model/inventario.model'
 })
 export class InventarioComponent implements OnInit{
   // displayedColumns: string[] = ['id', 'rfid', 'idnumeroparte', 'numeroparte', 'idcompania', 'compania', 'descripcion', 'iddi', 'di', 'idde', 'de', 'longitud', 'idubicacion', 'ubicacion', 'idrango', 'rango', 'esnuevo', 'bending', 'idestatus', 'estatus', 'fechaingreso', 'acciones'];
-  displayedColumns: string[] = ['id', 'rfid', 'numeroparte', 'descripcion','acciones'];
+  displayedColumns: string[] = ['id', 'rfid', 'numeroparte', 'descripcion', 'di',  'de', 'longitud','acciones'];
   columnIndex = { idNumeroParte: 2 }; 
   @ViewChild(MatPaginator) paginatior !:MatPaginator;
  
@@ -112,6 +113,20 @@ export class InventarioComponent implements OnInit{
     });
   }
 
+  openEdicion(id:number): void {
+    this.sharedService.edicionInventario = id;
+    const dialogRef = this.dialogBox.open(DialogBoxComponent, {
+        data: {
+        title: 'Editar tramo',
+        content: EditainventarioComponent 
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('La ventana modal de edicion se ha cerrado');
+      
+    });
+  }
 
   
 

@@ -1,0 +1,99 @@
+<form [formGroup]="formGroup">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <!-- Columna 1 -->
+          <mat-form-field class="field-left wide"  appearance="outline">
+            <mat-label>Número de parte</mat-label>
+            <mat-select formControlName="numeroParte">
+              <mat-option *ngFor="let parte of numparte" [value]="parte.id">{{ parte.numeroParte }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left wide" appearance="outline">
+            <mat-label>RFID</mat-label>
+            <input  maxlength="25" matInput formControlName="rfid" type="text">
+          </mat-form-field>
+    
+          <mat-form-field  class="field-left wide" appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <textarea  maxlength="200" matInput formControlName="descripcion"></textarea>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Diámetro interior</mat-label>
+            <mat-select formControlName="diametroInterior">
+              <mat-option *ngFor="let diametro of diametros" [value]="diametro.id">{{ diametro.diametroFraccion }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Longitud</mat-label>
+            <input  maxlength="8" matInput formControlName="longitud" type="text">
+            <mat-error>{{  getErrorMessage('longitud') }}</mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Estatus</mat-label>
+            <mat-select formControlName="estatus">
+              <mat-option *ngFor="let estat of estatus" [value]="estat.id">{{ estat.estatus }}</mat-option>
+            </mat-select>
+          </mat-form-field> 
+        <!-- </div> -->
+  
+        <!-- <div class="col-md-6"> -->
+          <!-- Columna 2 -->
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Diámetro exterior</mat-label>
+            <mat-select formControlName="diametroExterior">
+              <mat-option *ngFor="let diametro of diametros" [value]="diametro.id">{{ diametro.diametroFraccion }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Ubicación</mat-label>
+            <mat-select formControlName="ubicacion">
+              <mat-option *ngFor="let ubica of ubicacion" [value]="ubica.id">{{ ubica.ubicacion }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Grado</mat-label>
+            <mat-select formControlName="grado">
+              <mat-option *ngFor="let grad of grado" [value]="grad.id">{{ grad.grado }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Rango</mat-label>
+            <mat-select formControlName="rango">
+              <mat-option *ngFor="let rang of rango" [value]="rang.id">{{ rang.rango }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field class="field-left" appearance="outline">
+            <mat-label>Fecha de ingreso</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="fechaIngreso">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+    
+          <mat-slide-toggle class="field-left" formControlName="esValido" class="custom-slide-toggle" color="primary" [(ngModel)]="esValido" (change)="onSlideToggleChange($event)"> ¿Es válido? </mat-slide-toggle>
+            <mat-form-field class="field-left" *ngIf="!esValido" class="field-left" appearance="outline">
+              <mat-label>Bending</mat-label>
+              <input maxlength="8" matInput formControlName="bending" type="text">
+              <mat-error>{{  getErrorMessage('bending') }}</mat-error>
+            </mat-form-field>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col">
+        <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+        <button mat-raised-button (click)="cerrar()">Cerrar</button>
+      </div>
+    </div>
+  
+  </form>
+  

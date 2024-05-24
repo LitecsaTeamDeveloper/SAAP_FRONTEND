@@ -10,9 +10,6 @@ import { API_URL } from '../../shared/constant';
 })
 export class UsuarioService {
 
-//private urlApi = 'http://localhost:5057/api/Usuario/validausuario'
-//private urlApi = 'http://localhost:5057/api/Usuario/listausuario'
-
 private urlApi = API_URL;
 
     // public defaultHeaders = new HttpHeaders();
@@ -23,6 +20,7 @@ private urlApi = API_URL;
     constructor(protected httpClient: HttpClient, private loadingService: LoadingService ) {   }
 
     public getUsuarios(cuerpo:any): Observable<any> {
+        console.log('URL SERVICIO: ',this.urlApi);
         const headers = new HttpHeaders().set('Content-Type', 'application/json');
         const body = JSON.stringify(cuerpo);
         return this.httpClient.post<any>(`${this.urlApi}/Usuario/validausuario`, body, { headers: headers });

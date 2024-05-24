@@ -63,12 +63,30 @@
         <td mat-cell *matCellDef="let inventario"> {{ inventario.descripcion }} </td>
       </ng-container>
 
+      <!-- Columna Diametro interior -->
+      <ng-container matColumnDef="di">
+        <th mat-header-cell *matHeaderCellDef> Diametro Interior </th>
+        <td mat-cell *matCellDef="let inventario"> {{ inventario.diametroInterior }} </td>
+      </ng-container>
+
+        <!-- Columna Diametro exterior -->
+      <ng-container matColumnDef="de">
+      <th mat-header-cell *matHeaderCellDef> Diametro Exterior </th>
+      <td mat-cell *matCellDef="let inventario"> {{ inventario.diametroExterior }} </td>
+      </ng-container>
+
+      <!-- Columna Longitud -->
+      <ng-container matColumnDef="longitud">
+        <th mat-header-cell *matHeaderCellDef> Longitud </th>
+        <td mat-cell *matCellDef="let inventario"> {{ inventario.longitud }} </td>
+      </ng-container>
+
       <!-- Columna Acciones -->
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let inventario">
           <!-- Aquí puedes agregar botones para editar y eliminar -->
-          <button mat-icon-button color="primary" [matTooltip]="'Editar ' + inventario.rfid">
+          <button mat-icon-button color="primary" (click)="openEdicion(inventario.idInventario)" [matTooltip]="'Editar ' + inventario.rfid">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button color="warn" (click)="openDeleteDialog(inventario)" [matTooltip]="'Eliminar ' + inventario.descripcion">

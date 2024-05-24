@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -6,20 +8,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
-// // Material Angular
-// import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-// import { MatCardModule } from '@angular/material/card';
-// import {MatFormFieldModule} from '@angular/material/form-field';
-// import {MatIconModule} from '@angular/material/icon';
-// import {MatInputModule} from '@angular/material/input';
-// import {MatButtonModule} from '@angular/material/button';
-// import {MatToolbarModule} from '@angular/material/toolbar';
-// import {MatMenuModule} from '@angular/material/menu';
-// import {MatSidenavModule} from '@angular/material/sidenav';
-// import {MatDividerModule} from '@angular/material/divider';
-// import {MatListModule} from '@angular/material/list';
-// import { MatExpansionModule } from '@angular/material/expansion';
-// import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 //Componentes
 import { LoginComponent } from './auth/components/login/login.component';
@@ -34,6 +22,8 @@ import { LoadingInterceptor } from './shared/interceptor//loading.interceptor';
 import { DialogBoxComponent } from './shared/component/dialog-box/dialog-box.component';
 import { AlertBoxComponent } from './shared/component/alert-box/alert-box.component';
 import { AltainventarioComponent } from './inventario/components/altainventario/altainventario.component';
+import { EditainventarioComponent } from './inventario/components/editainventario/editainventario.component';
+import { OperacionComponent } from './operacion/components/operacion/operacion.component';
 
 
 @NgModule({
@@ -47,7 +37,9 @@ import { AltainventarioComponent } from './inventario/components/altainventario/
     SpinnerComponent,
     DialogBoxComponent,
     AlertBoxComponent,
-    AltainventarioComponent
+    AltainventarioComponent,
+    EditainventarioComponent,
+    OperacionComponent
   ],
   imports: [
     BrowserModule,
@@ -57,8 +49,13 @@ import { AltainventarioComponent } from './inventario/components/altainventario/
   ],
   providers: [
     provideAnimationsAsync(),
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'es' }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    registerLocaleData(localeEs);
+  }
+ }

@@ -21,6 +21,7 @@ export class DialogBoxComponent {
     this.dialogBoxService.setDialogRef(dialogRef);
   }
 
+
   onClose(): void {
     this.dialogRef.close();
   }

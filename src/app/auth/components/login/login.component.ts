@@ -3,8 +3,8 @@ import { Validators, AbstractControl, FormBuilder, FormGroup, FormControl , Vali
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
-import { ApiService } from '../../services/api.service';
 import { SharedService } from '../../../shared/services/shared.service';
+import { catchError } from 'rxjs/operators';
 
 // import { CheckRequiredField } from '../_shared/helpers/form.helper';
 // import { AuthService } from '../_auth/services/auth.service';
@@ -56,18 +56,32 @@ export class LoginComponent implements OnInit {
 
     console.log (body);
 
-    this.usuarioService.getUsuarios(body).subscribe(data => {
-    this.usuarios = data;
-    console.log ('objeto usuarios en login: ', this.usuarios);
- 
-    if (this.usuarios.valido) {
-      this.sharedService.nombreUsuario = this.usuarios.nombre;
-      this.sharedService.companiaUsuario = this.usuarios.idCompania;
-      this.router.navigate(['home']);
-    } else {
-      this.error();
-    }
-    })
+    this.usuarioService.getUsuarios(body).pipe(
+      catchError(error => {
+        // Manejo del error
+        if (error.status == 0) {
+
+          alert( 'Error en la peticion de servicios APIs');
+        } else {
+
+          alert( error.error);
+        }
+        throw error; // Lanzar el error para que siga propagándose
+      })
+    ).subscribe(
+      data => {
+        this.usuarios = data;
+        console.log ('objeto usuarios en login: ', this.usuarios);
+        if (this.usuarios.valido) {
+          this.sharedService.nombreUsuario = this.usuarios.nombre;
+          this.sharedService.companiaUsuario = this.usuarios.idCompania;
+          this.router.navigate(['home']);
+        } else {
+          this.error();
+        }
+      }
+    );
+    
   }
 
   // checkRequiredClass(frmControl: string) {
