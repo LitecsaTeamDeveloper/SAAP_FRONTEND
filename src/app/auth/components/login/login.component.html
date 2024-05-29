@@ -24,7 +24,7 @@
         <div>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Password</mat-label>
-            <input maxlength="25"
+            <input maxlength="25" minlength="8"
                 formControlName="password"
                 matInput [type]="hide ? 'password' : 'text'" 
                 placeholder="Escriba su password"  required

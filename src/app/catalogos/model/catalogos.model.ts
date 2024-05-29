@@ -28,4 +28,8 @@ export interface NumeroParte {
     grado:  string; 
   }
   
+  export interface Conexion {
+    id:  number; 
+    conexion:  string; 
+  }
   

@@ -38,4 +38,8 @@ private urlApi = API_URL;
     public getCatRango(): Observable<any> {
         return this.httpClient.get<any>(`${this.urlApi}/Catalogos/listarango`);
     }    
+
+    public getCatConexion(): Observable<any> {
+        return this.httpClient.get<any>(`${this.urlApi}/Catalogos/listaconexion`);
+    }    
 }
