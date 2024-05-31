@@ -6,7 +6,7 @@
         <mat-form-field class="field-left wide"  appearance="outline">
           <mat-label>Número de parte</mat-label>
           <mat-select formControlName="numeroParte" >
-            <mat-option *ngFor="let parte of numparte" [value]="parte.id">{{ parte.numeroParte }}</mat-option>
+            <mat-option  *ngFor="let parte of numparte" [value]="parte.id">{{ parte.numeroParte }}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -50,13 +50,7 @@
           </mat-select>
         </mat-form-field>
   
-        <mat-form-field class="field-left" appearance="outline">
-          <mat-label>Ubicación</mat-label>
-          <mat-select formControlName="ubicacion">
-            <mat-option *ngFor="let ubica of ubicacion" [value]="ubica.id">{{ ubica.ubicacion }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-  
+
         <mat-form-field class="field-left" appearance="outline">
           <mat-label>Grado</mat-label>
           <mat-select formControlName="grado">

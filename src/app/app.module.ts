@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { ActualizacionTablaService } from './shared/services/actualizaciontabla.service'
 
 //Componentes
 import { LoginComponent } from './auth/components/login/login.component';
@@ -50,7 +50,8 @@ import { OperacionComponent } from './operacion/components/operacion/operacion.c
   providers: [
     provideAnimationsAsync(),
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
-    { provide: LOCALE_ID, useValue: 'es' }
+    { provide: LOCALE_ID, useValue: 'es' },
+    ActualizacionTablaService
   ],
   bootstrap: [AppComponent]
 })

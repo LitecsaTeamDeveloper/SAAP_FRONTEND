@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { PageEvent } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 import { AlertService } from '../../../shared/services/alert.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../shared/component/dialog-box/dialog-box.component';
@@ -11,6 +11,7 @@ import { InventarioService } from '../../services/inventario.service';
 import { SharedService } from '../../../shared/services/shared.service';
 import { catchError } from 'rxjs/operators';
 import {Inventario } from '../../model/inventario.model'
+import { ActualizacionTablaService } from '../../../shared/services/actualizaciontabla.service';
 //import { ToastrService } from 'ngx-toastr';
 
 
@@ -21,7 +22,7 @@ import {Inventario } from '../../model/inventario.model'
   templateUrl: './inventario.component.html',
   styleUrl: './inventario.component.css'
 })
-export class InventarioComponent implements OnInit{
+export class InventarioComponent implements OnInit, OnDestroy{
   // displayedColumns: string[] = ['id', 'rfid', 'idnumeroparte', 'numeroparte', 'idcompania', 'compania', 'descripcion', 'iddi', 'di', 'idde', 'de', 'longitud', 'idubicacion', 'ubicacion', 'idrango', 'rango', 'esnuevo', 'bending', 'idestatus', 'estatus', 'fechaingreso', 'acciones'];
   displayedColumns: string[] = ['id', 'rfid', 'numeroparte', 'descripcion', 'di',  'de', 'longitud','acciones'];
   columnIndex = { idNumeroParte: 2 }; 
@@ -36,6 +37,8 @@ export class InventarioComponent implements OnInit{
 
    companiaUsuario: number = 0;
 
+   private dialogCerradoSubscription!: Subscription;
+
     // Propiedades para la paginación
     length = 100; // Número total de elementos
     pageSize = 10; // Tamaño de página
@@ -49,6 +52,7 @@ export class InventarioComponent implements OnInit{
               , private inventarioServices: InventarioService
               , private dialogBox: MatDialog
               , private sharedService: SharedService
+              , private actualizacionTablaService: ActualizacionTablaService
               )
  {
     
@@ -62,10 +66,16 @@ export class InventarioComponent implements OnInit{
     //this.dataSource.data = datausuario;
     this.companiaUsuario = this.sharedService.companiaUsuario;
     this.getInventario(this.companiaUsuario);
+
+    this.dialogCerradoSubscription = this.actualizacionTablaService.dialogCerrado$.subscribe(() => {
+    this.getInventario(this.companiaUsuario);
+    });
     
   }
 
-
+  ngOnDestroy() {
+    this.dialogCerradoSubscription.unsubscribe();
+  }
 
   // handlePageEvent(event: PageEvent) {
   //   this.dataSource.data = datausuario;
@@ -90,11 +100,16 @@ export class InventarioComponent implements OnInit{
       confirmText: 'SI'
     };
 
-    // If user confirms, remove selected row from data table
     this.alertService.open(options);
     this.alertService.confirmed().subscribe(confirmed => {
       if (confirmed) {
-        console.log('borrado');
+        const infoborrado = {
+          "idInventario": dato.idInventario,
+          "tipoRegistro": "D",
+          "fechaIngreso": dato.fechaIngreso,
+        }
+        this.deleteInventario(infoborrado);
+        
       }
     });
   }
@@ -149,7 +164,22 @@ export class InventarioComponent implements OnInit{
       }
     );
   }
+
   
+  deleteInventario(datos: any) {
+    this.inventarioServices.deleteInventario(datos).subscribe(
+      data => {
+        console.log(data); 
+        this.getInventario(this.companiaUsuario);
+
+      },
+      error => {
+        console.log('Error en la solicitud:', error);
+        alert('Error en la solicitud. Consulta la consola para más detalles.');
+      }
+    );
+  }
+
   // getInventario(compania: number) {
 
   // let listainventario: any;

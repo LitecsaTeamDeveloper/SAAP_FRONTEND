@@ -4,9 +4,10 @@ import { DialogBoxService } from '../../../shared/services/dialog-box.service';
 import { CatalogosService } from '../../../catalogos/services/catalogos.service';
 import { catchError } from 'rxjs/operators';
 import { regExps, errorMessages } from '../../../shared/validator';
-import {NumeroParte, Diametros, Estatus,Grado,Rango,Ubicacion, Conexion } from '../../../catalogos/model/catalogos.model'
+import {NumeroParte, Diametros, Estatus,Grado,Rango, Conexion } from '../../../catalogos/model/catalogos.model'
 import { SharedService } from '../../../shared/services/shared.service';
 import { InventarioService } from '../../services/inventario.service';
+import { ActualizacionTablaService } from '../../../shared/services/actualizaciontabla.service';
 
 @Component({
   selector: 'app-editainventario',
@@ -18,7 +19,7 @@ export class EditainventarioComponent implements OnInit {
   formGroup!: FormGroup;
   numparte: NumeroParte[] = [];
   diametros: Diametros[] = [];
-  ubicacion: Ubicacion[] = [];
+  
   estatus: Estatus[] = [];
   rango: Rango[] = [];
   grado: Grado[] = [];
@@ -27,13 +28,13 @@ export class EditainventarioComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private dialogBoxService: DialogBoxService
               , private catalogos: CatalogosService, private sharedService: SharedService
-              , private reginventario: InventarioService
+              , private reginventario: InventarioService, private actualizacionTablaService: ActualizacionTablaService
   ) { }
 
   ngOnInit() {
  
     this.formGroup = this.formBuilder.group({
-      numeroParte: ['',  Validators.required,],
+      numeroParte: ['', Validators.required,],
       rfid: ['', Validators.required],
       descripcion: ['', Validators.required],
       diametroInterior: ['', Validators.required],
@@ -44,7 +45,7 @@ export class EditainventarioComponent implements OnInit {
         Validators.maxLength(8)
       ])],
       estatus: ['', Validators.required],
-      ubicacion: ['', Validators.required],
+
       grado: ['', Validators.required],
       conexion: ['', Validators.required],
       libraje: ['', Validators.compose([
@@ -68,7 +69,7 @@ export class EditainventarioComponent implements OnInit {
     //Lista de catalogos
     this.getNumeroParte();
     this.getDiametros();
-    this.getUbicacion();
+    
     this.getEstatus();
     this.getGrado();
     this.getRango();
@@ -82,36 +83,39 @@ export class EditainventarioComponent implements OnInit {
     // Lógica para guardar el formulario
     //const datostubos = this.formGroup.value;
     //console.log('Esto es lo que se guarda: ',this.formGroup.value);
+    if (this.validaFormulario()) {
+      if (!(this.formGroup.get("esValido")?.value) && (this.getErrorMessageB("bending") || this.formGroup.get("bending")?.invalid) ) {
+        alert("El valor de bending es incorrecto");
+      } else {
+        const datostubos = {
+          "idInventario": this.sharedService.edicionInventario,
+          "rfid": this.formGroup.get("rfid")?.value,
+          "idNumeroParte": this.formGroup.get("numeroParte")?.value,
+          "idCompania": this.sharedService.companiaUsuario,
+          "descripcion": this.formGroup.get("descripcion")?.value,
+          "idDiametroInterior": this.formGroup.get("diametroInterior")?.value,
+          "idDiametroExterior": this.formGroup.get("diametroExterior")?.value,
+          "longitud": this.formGroup.get("longitud")?.value,
 
-  if (!(this.formGroup.get("esValido")?.value) && this.getErrorMessageB("bending")) {
-    alert("El valor de bending es incorrecto");
-  } else {
-    const datostubos = {
-      "idInventario": this.sharedService.edicionInventario,
-      "rfid": this.formGroup.get("rfid")?.value,
-      "idNumeroParte": this.formGroup.get("numeroParte")?.value,
-      "idCompania": this.sharedService.companiaUsuario,
-      "descripcion": this.formGroup.get("descripcion")?.value,
-      "idDiametroInterior": this.formGroup.get("diametroInterior")?.value,
-      "idDiametroExterior": this.formGroup.get("diametroExterior")?.value,
-      "longitud": this.formGroup.get("longitud")?.value,
-      "idUbicacion": this.formGroup.get("ubicacion")?.value,
-      "idRango": this.formGroup.get("rango")?.value,
-      "idGrado": this.formGroup.get("grado")?.value,
-      "idConexion": this.formGroup.get("conexion")?.value,
-      "libraje": this.formGroup.get("libraje")?.value,
-      "esNuevo": this.formGroup.get("esValido")?.value,
-      "bending": this.formGroup.get("esValido")?.value? 0: this.formGroup.get("bending")?.value,
-      "idEstatus": this.formGroup.get("estatus")?.value,
-      "fechaIngreso": this.formGroup.get("fechaIngreso")?.value,
-      "tipoRegistro": "E"
+          "idRango": this.formGroup.get("rango")?.value,
+          "idGrado": this.formGroup.get("grado")?.value,
+          "idConexion": this.formGroup.get("conexion")?.value,
+          "libraje": this.formGroup.get("libraje")?.value,
+          "esNuevo": this.formGroup.get("esValido")?.value,
+          "bending": this.formGroup.get("esValido")?.value? 0: this.formGroup.get("bending")?.value===""? 0: this.formGroup.get("bending")?.value,
+          "idEstatus": this.formGroup.get("estatus")?.value,
+          "fechaIngreso": this.formGroup.get("fechaIngreso")?.value,
+          "tipoRegistro": "E"
+        }
+        
+        console.log('Esto es lo que se guarda en datos tubos: ',datostubos);
+        this.guardaInventario(datostubos);
+      }
     }
-    
-    console.log('Esto es lo que se guarda en datos tubos: ',datostubos);
-    this.guardaInventario(datostubos);
-  }
-
-
+    else {
+      alert ("Faltan datos requeridos u obligatorios");
+    }
+  
   }
 
   cerrar(): void {
@@ -123,7 +127,7 @@ export class EditainventarioComponent implements OnInit {
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
-        alert( error.error);
+        alert( 'Error en la peticion de servicios APIs de Numero de parte');
         console.log('Error en la solicitud:', error.status);
         throw error; // Lanzar el error para que siga propagándose
       })
@@ -133,6 +137,7 @@ export class EditainventarioComponent implements OnInit {
         console.log(this.numparte);
       }
     );
+
   }  
 
   getDiametros() {
@@ -140,7 +145,7 @@ export class EditainventarioComponent implements OnInit {
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
-        alert( error.error);
+        alert( 'Error en la peticion de servicios APIs de Diametros');
         throw error; // Lanzar el error para que siga propagándose
       })
     ).subscribe(
@@ -151,28 +156,13 @@ export class EditainventarioComponent implements OnInit {
     );
   }  
 
-  getUbicacion() {
-    this.catalogos.getCatUbicacion().pipe(
-      catchError(error => {
-        // Manejo del error
-        console.log('Error en la solicitud objeto general:', error.error);
-        alert( error.error);
-        throw error; // Lanzar el error para que siga propagándose
-      })
-    ).subscribe(
-      data => {
-        this.ubicacion = data;
-        console.log(this.ubicacion);
-      }
-    );
-  }  
 
   getEstatus() {
     this.catalogos.getCatEstatus().pipe(
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
-        alert( error.error);
+        alert( 'Error en la peticion de servicios APIs de Estatus');
         throw error; // Lanzar el error para que siga propagándose
       })
     ).subscribe(
@@ -188,7 +178,7 @@ export class EditainventarioComponent implements OnInit {
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
-        alert( error.error);
+        alert( 'Error en la peticion de servicios APIs de Rangos');
         throw error; // Lanzar el error para que siga propagándose
       })
     ).subscribe(
@@ -205,7 +195,7 @@ export class EditainventarioComponent implements OnInit {
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
-        alert( error.error);
+        alert( 'Error en la peticion de servicios APIs de Grado');
         throw error; // Lanzar el error para que siga propagándose
       })
     ).subscribe(
@@ -221,7 +211,7 @@ export class EditainventarioComponent implements OnInit {
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
-        alert( error.error);
+        alert( 'Error en la peticion de servicios APIs de Conexion');
         throw error; // Lanzar el error para que siga propagándose
       })
     ).subscribe(
@@ -231,6 +221,7 @@ export class EditainventarioComponent implements OnInit {
       }
     );
   }    
+
 
   onSlideToggleChange(event: any) {
     this.esValido = event.checked;
@@ -284,6 +275,7 @@ export class EditainventarioComponent implements OnInit {
       data => {
         console.log(data); // Manejo exitoso de la respuesta
         this.dialogBoxService.closeDialog();
+        this.actualizacionTablaService.notificarDialogCerrado();
       },
       error => {
         console.log('Error en la solicitud:', error);
@@ -332,7 +324,6 @@ const datos = datosorigin;
     this.formGroup.get("diametroExterior")?.setValue(datos.idDiametroExterior);
     this.formGroup.get("longitud")?.setValue(datos.longitud);
     this.formGroup.get("estatus")?.setValue(datos.idEstatus);
-    this.formGroup.get("ubicacion")?.setValue(datos.idUbicacion);
     this.formGroup.get("grado")?.setValue(datos.idGrado);
     this.formGroup.get("conexion")?.setValue(datos.idConexion);
     this.formGroup.get("libraje")?.setValue(datos.libraje);
@@ -344,4 +335,27 @@ const datos = datosorigin;
 
   }
   
+
+  validaFormulario(): boolean {
+
+    if (this.formGroup.get("rfid")?.invalid ||
+    this.formGroup.get("numeroParte")?.invalid ||
+    this.formGroup.get("descripcion")?.invalid ||
+    this.formGroup.get("diametroInterior")?.invalid ||
+    this.formGroup.get("diametroExterior")?.invalid ||
+    this.formGroup.get("longitud")?.invalid ||
+    this.formGroup.get("rango")?.invalid ||
+    this.formGroup.get("grado")?.invalid ||
+    this.formGroup.get("conexion")?.invalid ||
+    this.formGroup.get("libraje")?.invalid ||
+    this.formGroup.get("estatus")?.invalid ||
+    this.formGroup.get("fechaIngreso")?.invalid
+  ) {
+      return false;
+  } else 
+   {
+      return true;
+   }
+
+  }  
 }

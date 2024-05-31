@@ -28,5 +28,10 @@ private urlApi = API_URL;
         return this.httpClient.get<any>(`${this.urlApi}/Inventario/obtieneinventario/${inventario}`);
     }
 
+    public deleteInventario(cuerpo:any): Observable<any> {
+        const headers = new HttpHeaders().set('Content-Type', 'application/json');
+        const body = JSON.stringify(cuerpo);
+        return this.httpClient.post<any>(`${this.urlApi}/Inventario/eliminainventario`, body, { headers: headers });
+    }
 
 }

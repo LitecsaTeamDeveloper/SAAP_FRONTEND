@@ -11,8 +11,6 @@ export interface Inventario {
     idDiametroExterior:  number; 
     diametroExterior:  string; 
     longitud:  number; 
-    idUbicacion:  number; 
-    ubicacion:  string; 
     idRango:  number; 
     rango: string ; 
     esNuevo:  boolean; 
