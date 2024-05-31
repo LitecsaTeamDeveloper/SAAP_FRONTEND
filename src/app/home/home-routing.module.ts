@@ -5,7 +5,9 @@ import { InventarioComponent } from '../inventario/components/inventario/inventa
 import { InicioComponent } from '../inicio/inicio/inicio.component';
 import { CatalogosComponent } from '../catalogos/catalogos.component';
 import { OperacionComponent } from '../operacion/components/operacion/operacion.component';
-
+import { MantenimientoComponent } from '../mantenimiento/components/mantenimiento/mantenimiento.component';
+import { DashboardComponent } from '../dashboard/components/dashboard/dashboard.component';
+import { ReportesComponent } from '../reportes/components/reportes/reportes.component';
 
 const routes: Routes = [
   {
@@ -15,6 +17,9 @@ const routes: Routes = [
       { path: 'catalogo', component: CatalogosComponent },
       { path: 'inventario', component: InventarioComponent },
       { path: 'operacion', component: OperacionComponent },
+      { path: 'mantenimiento', component: MantenimientoComponent },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'reportes', component: ReportesComponent },
     ]
   }
 ];

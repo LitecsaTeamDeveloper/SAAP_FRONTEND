@@ -24,6 +24,9 @@ import { AlertBoxComponent } from './shared/component/alert-box/alert-box.compon
 import { AltainventarioComponent } from './inventario/components/altainventario/altainventario.component';
 import { EditainventarioComponent } from './inventario/components/editainventario/editainventario.component';
 import { OperacionComponent } from './operacion/components/operacion/operacion.component';
+import { MantenimientoComponent } from './mantenimiento/components/mantenimiento/mantenimiento.component';
+import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
+import { ReportesComponent } from './reportes/components/reportes/reportes.component';
 
 
 @NgModule({
@@ -39,7 +42,10 @@ import { OperacionComponent } from './operacion/components/operacion/operacion.c
     AlertBoxComponent,
     AltainventarioComponent,
     EditainventarioComponent,
-    OperacionComponent
+    OperacionComponent,
+    MantenimientoComponent,
+    DashboardComponent,
+    ReportesComponent
   ],
   imports: [
     BrowserModule,

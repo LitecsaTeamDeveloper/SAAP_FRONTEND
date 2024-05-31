@@ -75,7 +75,9 @@ export class EditainventarioComponent implements OnInit {
     this.getRango();
     this.getConexion();
 
-   this.getInventarioIndividual(this.sharedService.edicionInventario);
+
+
+   this.getInventarioIndividual();
 
   }
 
@@ -284,8 +286,12 @@ export class EditainventarioComponent implements OnInit {
     );
   }
 
-  getInventarioIndividual(inventario: number) {
-    this.reginventario.getInventarioIndividual(inventario).pipe(
+  getInventarioIndividual() {
+    const infoborrado = {
+      "idInventario": this.sharedService.edicionInventario,
+      "tipoRegistro": "C"
+    }
+    this.reginventario.getInventarioIndividual(infoborrado).pipe(
       catchError(error => {
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
@@ -296,7 +302,7 @@ export class EditainventarioComponent implements OnInit {
       data => {
         const inventarioedicion = data;
         console.log(inventarioedicion);
-        this.llenaFormulario(inventarioedicion, inventario);
+        this.llenaFormulario(inventarioedicion, this.sharedService.edicionInventario);
       }
     );
   }   

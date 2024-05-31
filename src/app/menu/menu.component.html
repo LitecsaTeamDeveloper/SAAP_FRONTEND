@@ -65,13 +65,15 @@
 <mat-drawer-container autosize>
     <mat-drawer #drawer opened="true" mode="side" position="start">
     <mat-nav-list>
-        <!-- <mat-list-item>
-            <button routerLink="card" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
-        </mat-list-item> -->
         <mat-list-item>
             <button routerLink="inicio" mat-button><mat-icon><img src="../../assets/img/home.png" width="20px" height="20px"></mat-icon> Inicio</button>
             <!-- <button routerLink="inicio" mat-button><mat-icon>home</mat-icon> Inicio</button> -->
         </mat-list-item>
+
+        <mat-list-item>
+            <button routerLink="dashboard" mat-button><mat-icon><img src="../../assets/img/dash.png" width="20px" height="20px"></mat-icon> Dashboard </button>
+            <!-- <button routerLink="card" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button> -->
+        </mat-list-item>        
         
         <mat-list-item>
             <button routerLink="catalogo" mat-button><mat-icon><img src="../../assets/img/catalogo.png" width="20px" height="20px"></mat-icon> Catalogos</button>
@@ -86,11 +88,11 @@
             <!-- <button routerLink="operacion" mat-button><mat-icon>engineering</mat-icon> Operación</button> -->
         </mat-list-item>
         <mat-list-item>
-            <button  mat-button><mat-icon><img src="../../assets/img/mantto.png" width="20px" height="20px"></mat-icon> Mantenimiento</button>             
+            <button routerLink="mantenimiento"  mat-button><mat-icon><img src="../../assets/img/mantto.png" width="20px" height="20px"></mat-icon> Mantenimiento</button>             
         <!-- <button mat-button><mat-icon>build</mat-icon> Mantenimiento</button> -->
         </mat-list-item>
         <mat-list-item>
-            <button  mat-button><mat-icon><img src="../../assets/img/reporte.png" width="20px" height="20px"></mat-icon> Reportes</button>             
+            <button routerLink="reportes"  mat-button><mat-icon><img src="../../assets/img/reporte.png" width="20px" height="20px"></mat-icon> Reportes</button>             
             <!-- <button mat-button><mat-icon>bar_chart_4_bars</mat-icon> Reportes</button> -->
         </mat-list-item>
     </mat-nav-list>

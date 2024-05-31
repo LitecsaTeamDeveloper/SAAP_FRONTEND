@@ -105,8 +105,7 @@ export class InventarioComponent implements OnInit, OnDestroy{
       if (confirmed) {
         const infoborrado = {
           "idInventario": dato.idInventario,
-          "tipoRegistro": "D",
-          "fechaIngreso": dato.fechaIngreso,
+          "tipoRegistro": "D"
         }
         this.deleteInventario(infoborrado);
         
@@ -165,20 +164,37 @@ export class InventarioComponent implements OnInit, OnDestroy{
     );
   }
 
-  
   deleteInventario(datos: any) {
-    this.inventarioServices.deleteInventario(datos).subscribe(
+    let listainventario: any;
+    this.inventarioServices.deleteInventario(datos).pipe(
+      catchError(error => {
+        // Manejo del error
+        console.log('Error en la solicitud:', error);
+        alert('Error en la solicitud. Consulta la consola para más detalles.');
+        throw error; // Lanzar el error para que siga propagándose
+      })
+    ).subscribe(
       data => {
         console.log(data); 
         this.getInventario(this.companiaUsuario);
-
-      },
-      error => {
-        console.log('Error en la solicitud:', error);
-        alert('Error en la solicitud. Consulta la consola para más detalles.');
       }
     );
   }
+
+  
+  // deleteInventario(datos: any) {
+  //   this.inventarioServices.deleteInventario(datos).subscribe(
+  //     data => {
+  //       console.log(data); 
+  //       this.getInventario(this.companiaUsuario);
+
+  //     },
+  //     error => {
+  //       console.log('Error en la solicitud:', error);
+  //       alert('Error en la solicitud. Consulta la consola para más detalles.');
+  //     }
+  //   );
+  // }
 
   // getInventario(compania: number) {
 
