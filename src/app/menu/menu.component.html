@@ -1,29 +1,35 @@
 <mat-toolbar color="primary" class="mat-elevation-z8">
     <button (click)="drawer.toggle()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
+        <!-- <mat-icon>menu</mat-icon> -->
+        <mat-icon><img src="../../../../assets/img/logosaap.png" width="25px" height="25px" ></mat-icon>
     </button>
     <span> S A A P </span>
+
     <span class="toolbar-item-spacer"></span>
     <!-- <button mat-icon-button matTooltip="Notificaciones">
         <mat-icon>notifications</mat-icon>
     </button> -->
     <h1>Bienvenido: {{ nombreUsuario }}</h1>
     <button mat-icon-button matTooltip="Mi Cuenta" [matMenuTriggerFor]="userAccountMenu">
-        <mat-icon>account_circle</mat-icon>
+        <!-- <mat-icon>account_circle</mat-icon> -->
+        <mat-icon><img src="../../../../assets/img/usuario.png" width="22px" height="22px" ></mat-icon>
     </button>
     <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
         <button mat-menu-item routerLink="#">
-            <mat-icon>person</mat-icon><span>Mi Cuenta</span>
+            <mat-icon><img src="../../../../assets/img/micuenta.png" width="23px" height="23px" ></mat-icon><span>Mi Cuenta</span>
+            <!-- <mat-icon>person</mat-icon><span>Mi Cuenta</span> -->
         </button>
         <!-- <button mat-menu-item routerLink="#">
             <mat-icon>settings</mat-icon><span>Configuración</span>
         </button> -->
         <button mat-menu-item routerLink="#">
-            <mat-icon>help</mat-icon><span>Ayuda</span>
+            <!-- <mat-icon>help</mat-icon><span>Ayuda</span> -->
+            <mat-icon><img src="../../../../assets/img/help.png" width="23px" height="23px" ></mat-icon><span>Ayuda</span>
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item routerLink="#">
-            <mat-icon>exit_to_app</mat-icon>Cerrar sesión
+            <!-- <mat-icon>exit_to_app</mat-icon><span>Cerrar sesión</span> -->
+            <mat-icon><img src="../../../../assets/img/exit.png" width="23px" height="23px" ></mat-icon><span>Cerrar sesión</span>
         </button>
     </mat-menu>
     <span class="fill-remaining-space"></span>
