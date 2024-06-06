@@ -42,4 +42,8 @@ private urlApi = API_URL;
     public getCatConexion(): Observable<any> {
         return this.httpClient.get<any>(`${this.urlApi}/Catalogos/listaconexion`);
     }    
+
+    public getCatPozo(): Observable<any> {
+        return this.httpClient.get<any>(`${this.urlApi}/Catalogos/listapozo`);
+    }    
 }

@@ -33,6 +33,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatDatepickerModule,
     MatNativeDateModule,
     MatGridListModule,
-    FormsModule
+    FormsModule,
+    MatStepperModule,
+    MatCheckboxModule
 
   ],
   exports: [
@@ -95,7 +99,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatDatepickerModule,
     MatNativeDateModule,
     MatGridListModule,
-    FormsModule
+    FormsModule,
+    MatStepperModule,
+    MatCheckboxModule
 
   ],
   providers: [

@@ -151,8 +151,7 @@ export class InventarioComponent implements OnInit, OnDestroy{
         // Manejo del error
         console.log('Error en la solicitud objeto general:', error.error);
         //this.toastr.error('Se produjo un error al obtener el inventario: ' + error.error, 'SAAP - Error');
-        console.log('Error en la solicitud:', error.status);
-        // Aquí puedes mostrar un mensaje de error al usuario o realizar cualquier otra acción necesaria.
+        alert( 'Error en la peticion de servicios APIs listado de inventario');
         throw error; // Lanzar el error para que siga propagándose
       })
     ).subscribe(

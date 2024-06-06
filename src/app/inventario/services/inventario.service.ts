@@ -36,4 +36,8 @@ private urlApi = API_URL;
         return this.httpClient.post<any>(`${this.urlApi}/Inventario/eliminainventario`, body, { headers: headers });
     }
 
+    public getInventarioDisponible(compania: number): Observable<any> {
+        return this.httpClient.get<any>(`${this.urlApi}/Inventario/listainventariodisponible/${compania}`);
+    } 
+
 }

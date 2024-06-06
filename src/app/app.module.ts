@@ -27,6 +27,7 @@ import { OperacionComponent } from './operacion/components/operacion/operacion.c
 import { MantenimientoComponent } from './mantenimiento/components/mantenimiento/mantenimiento.component';
 import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
 import { ReportesComponent } from './reportes/components/reportes/reportes.component';
+import { MovimientotpComponent } from './operacion/components/movimientotp/movimientotp.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { ReportesComponent } from './reportes/components/reportes/reportes.compo
     OperacionComponent,
     MantenimientoComponent,
     DashboardComponent,
-    ReportesComponent
+    ReportesComponent,
+    MovimientotpComponent
   ],
   imports: [
     BrowserModule,

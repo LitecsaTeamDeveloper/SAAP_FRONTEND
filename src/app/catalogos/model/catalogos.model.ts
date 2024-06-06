@@ -33,3 +33,7 @@ export interface NumeroParte {
     conexion:  string; 
   }
   
+  export interface Pozo {
+    id:  number; 
+    pozo:  string; 
+  }

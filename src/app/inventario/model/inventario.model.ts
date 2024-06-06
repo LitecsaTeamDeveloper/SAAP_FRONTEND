@@ -7,9 +7,9 @@ export interface Inventario {
     compania:  string; 
     descripcion:  string; 
     idDiametroInterior:  number; 
-    diametroInterior:  string; 
+    diametroInteriorFraccion:  string; 
     idDiametroExterior:  number; 
-    diametroExterior:  string; 
+    diametroExteriorFraccion:  string; 
     longitud:  number; 
     idRango:  number; 
     rango: string ; 
