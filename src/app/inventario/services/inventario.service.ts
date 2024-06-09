@@ -40,4 +40,8 @@ private urlApi = API_URL;
         return this.httpClient.get<any>(`${this.urlApi}/Inventario/listainventariodisponible/${compania}`);
     } 
 
+    public validaRfid(rfid: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.urlApi}/Inventario/validarfid/${rfid}`);
+    }
+
 }

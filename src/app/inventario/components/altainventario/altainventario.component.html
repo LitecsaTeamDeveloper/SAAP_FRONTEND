@@ -3,6 +3,7 @@
     <div class="row">
       <div class="col-md-6">
         <!-- Columna 1 -->
+        <br>
         <mat-form-field class="field-left wide"  appearance="outline">
           <mat-label>Número de parte</mat-label>
           <mat-select formControlName="numeroParte">
@@ -12,7 +13,7 @@
   
         <mat-form-field class="field-left wide" appearance="outline">
           <mat-label>RFID</mat-label>
-          <input maxlength="25" matInput formControlName="rfid" type="text">
+          <input maxlength="25" matInput formControlName="rfid" type="text" (blur)="validaRfid($event)">
         </mat-form-field>
   
         <mat-form-field  class="field-left wide" appearance="outline">
@@ -22,11 +23,18 @@
   
         <mat-form-field class="field-left" appearance="outline">
           <mat-label>Diámetro interior</mat-label>
-          <mat-select formControlName="diametroInterior">
+          <mat-select formControlName="diametroInterior" (selectionChange)="valDiaInterior($event.value)">
             <mat-option *ngFor="let diametro of diametros" [value]="diametro.id">{{ diametro.diametroFraccion }}</mat-option>
           </mat-select>
         </mat-form-field>
   
+        <mat-form-field class="field-left" appearance="outline">
+          <mat-label>Diámetro exterior</mat-label>
+          <mat-select formControlName="diametroExterior"  (selectionChange)="valDiaExterior($event.value)">
+            <mat-option *ngFor="let diametro of diametros" [value]="diametro.id">{{ diametro.diametroFraccion }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <mat-form-field class="field-left" appearance="outline">
           <mat-label>Longitud</mat-label>
           <input maxlength="5" matInput formControlName="longitud" type="text">
@@ -43,14 +51,7 @@
 
       <!-- <div class="col-md-6"> -->
         <!-- Columna 2 -->
-        <mat-form-field class="field-left" appearance="outline">
-          <mat-label>Diámetro exterior</mat-label>
-          <mat-select formControlName="diametroExterior">
-            <mat-option *ngFor="let diametro of diametros" [value]="diametro.id">{{ diametro.diametroFraccion }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-  
- 
+
         <mat-form-field class="field-left" appearance="outline">
           <mat-label>Grado</mat-label>
           <mat-select formControlName="grado">

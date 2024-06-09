@@ -25,6 +25,8 @@ export class EditainventarioComponent implements OnInit {
   grado: Grado[] = [];
   conexion: Conexion[] = [];
   isChecked = true;
+  valDi: any = 0;
+  valDe: any = 0;
 
   constructor(private formBuilder: FormBuilder, private dialogBoxService: DialogBoxService
               , private catalogos: CatalogosService, private sharedService: SharedService
@@ -34,6 +36,7 @@ export class EditainventarioComponent implements OnInit {
   ngOnInit() {
  
     this.formGroup = this.formBuilder.group({
+      idInventario: ['',],
       numeroParte: ['', Validators.required,],
       rfid: ['', Validators.required],
       descripcion: ['', Validators.required],
@@ -65,6 +68,7 @@ export class EditainventarioComponent implements OnInit {
 
     this.formGroup.get('numeroParte')?.disable();
     this.formGroup.get('rfid')?.disable();
+    this.formGroup.get('idInventario')?.disable();
 
     //Lista de catalogos
     this.getNumeroParte();
@@ -86,6 +90,15 @@ export class EditainventarioComponent implements OnInit {
     //const datostubos = this.formGroup.value;
     //console.log('Esto es lo que se guarda: ',this.formGroup.value);
     if (this.validaFormulario()) {
+
+      if (this.valDe > 0 && this.valDi > 0) {
+        if (this.valDi > this.valDe) {
+            console.log("El diametro interior debe ser menor al diametro mayor")
+            alert('El diametro interior debe ser menor al diametro mayor');
+          return;
+        }
+      } 
+      
       if (!(this.formGroup.get("esValido")?.value) && (this.getErrorMessageB("bending") || this.formGroup.get("bending")?.invalid) ) {
         alert("El valor de bending es incorrecto");
       } else {
@@ -273,17 +286,22 @@ export class EditainventarioComponent implements OnInit {
   // } 
   
   guardaInventario(datos: any) {
-    this.reginventario.regInventario(datos).subscribe(
+
+    this.reginventario.regInventario(datos).pipe(
+      catchError(error => {
+        console.log('Error en la solicitud:', error);
+        alert('Error en el registro del tramo. Consulta la consola para más detalles.');
+        throw error; // Lanzar el error para que siga propagándose
+      })
+    ).subscribe(
       data => {
         console.log(data); // Manejo exitoso de la respuesta
+        alert('Tramo actualizado con Exito”,');
         this.dialogBoxService.closeDialog();
         this.actualizacionTablaService.notificarDialogCerrado();
-      },
-      error => {
-        console.log('Error en la solicitud:', error);
-        alert('Error en la solicitud. Consulta la consola para más detalles.');
       }
     );
+
   }
 
   getInventarioIndividual() {
@@ -322,7 +340,7 @@ const datos = datosorigin;
     }
 
     console.log('procesadata: ', processedData);
-
+    this.formGroup.get("idInventario")?.setValue(datos.idInventario);
     this.formGroup.get("numeroParte")?.setValue(datos.idNumeroParte);
     this.formGroup.get("rfid")?.setValue(datos.rfid);
     this.formGroup.get("descripcion")?.setValue(datos.descripcion);
@@ -364,4 +382,59 @@ const datos = datosorigin;
    }
 
   }  
+
+  valDiaInterior(selectedValue: any) {
+    const selectedFraccionExterior = this.diametros.find(diametro => diametro.id === selectedValue);
+
+    console.log('valor de la descripcion del select de diametro: ',selectedFraccionExterior?.diametroFraccion);
+
+    const valor: any = selectedFraccionExterior?.diametroFraccion;
+
+    console.log('diametroexterior: ', this.convertirAFraccion(valor));
+    this.valDi = this.convertirAFraccion(valor);
+
+    if (this.valDe > 0 && this.valDi > 0) {
+      if (this.valDi > this.valDe) {
+          console.log("El diametro interior debe ser menor al diametro mayor")
+          alert('El diametro interior debe ser menor al diametro mayor');
+      }
+  } 
+  } 
+
+  valDiaExterior(selectedValue: any) {
+    const selectedFraccionExterior = this.diametros.find(diametro => diametro.id === selectedValue);
+
+    console.log('valor id del select de diametro: ',selectedValue);
+    console.log('valor de la descripcion del select de diametro: ',selectedFraccionExterior?.diametroFraccion);
+    const valor: any = selectedFraccionExterior?.diametroFraccion;
+
+    console.log('diametroexterior: ', this.convertirAFraccion(valor));
+
+    this.valDe = this.convertirAFraccion(valor);
+
+    if (this.valDe > 0 && this.valDi > 0) {
+        if (this.valDi > this.valDe) {
+            console.log("El diametro interior debe ser menor al diametro mayor")
+            alert('El diametro interior debe ser menor al diametro mayor');
+           
+        }
+    } 
+
+  }  
+
+  convertirAFraccion(cadena: string): number {
+    const partes = cadena.split(" ");
+    if (partes.length !== 2 || !partes[1].includes("/")) {
+       return parseInt(cadena);
+    }
+
+    // const partes = cadena.split(" ");
+    const entero = parseInt(partes[0]);
+    const fraccionPartes = partes[1].split("/");
+    const numerador = parseInt(fraccionPartes[0]);
+    const denominador = parseInt(fraccionPartes[1]);
+  
+    return entero + numerador / denominador;
+  }
+
 }

@@ -2,12 +2,13 @@ import { Component, OnInit, EventEmitter  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogBoxService } from '../../../shared/services/dialog-box.service';
 import { CatalogosService } from '../../../catalogos/services/catalogos.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { regExps, errorMessages } from '../../../shared/validator';
 import {NumeroParte, Diametros, Estatus,Grado,Rango, Conexion } from '../../../catalogos/model/catalogos.model'
 import { SharedService } from '../../../shared/services/shared.service';
 import { InventarioService } from '../../services/inventario.service';
 import { ActualizacionTablaService } from '../../../shared/services/actualizaciontabla.service';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
@@ -26,6 +27,10 @@ export class AltainventarioComponent implements OnInit {
   grado: Grado[] = [];
   conexion: Conexion[] = [];
   isChecked = true;
+  valDi: any = 0;
+  valDe: any = 0;
+  esValidoRfid: boolean = true;
+  valRfid: string = '';
 
   constructor(private formBuilder: FormBuilder, private dialogBoxService: DialogBoxService
               , private catalogos: CatalogosService, private sharedService: SharedService
@@ -78,6 +83,15 @@ export class AltainventarioComponent implements OnInit {
   guardar() {
     // Lógica para guardar el formulario
 if (this.validaFormulario()) {
+
+    if (this.valDe > 0 && this.valDi > 0) {
+      if (this.valDi > this.valDe) {
+          console.log("El diametro interior debe ser menor al diametro mayor")
+          alert('El diametro interior debe ser menor al diametro mayor');
+        return;
+      }
+    } 
+
     if (!(this.formGroup.get("esValido")?.value) && (this.getErrorMessageB("bending") || this.formGroup.get("bending")?.invalid) ) {
       alert("El valor de bending es incorrecto");
     } else {
@@ -253,17 +267,32 @@ if (this.validaFormulario()) {
   // } 
   
   guardaInventario(datos: any) {
-    this.reginventario.regInventario(datos).subscribe(
+    this.reginventario.regInventario(datos).pipe(
+      catchError(error => {
+        console.log('Error en la solicitud:', error);
+        alert('Error en el registro del tramo. Consulta la consola para más detalles.');
+        throw error; // Lanzar el error para que siga propagándose
+      })
+    ).subscribe(
       data => {
         console.log(data); // Manejo exitoso de la respuesta
+        alert('Tramo registrado con Exito”,');
         this.dialogBoxService.closeDialog();
         this.actualizacionTablaService.notificarDialogCerrado();
-      },
-      error => {
-        console.log('Error en la solicitud:', error);
-        alert('Error en la solicitud. Consulta la consola para más detalles.');
       }
-    );
+    );    
+    // this.reginventario.regInventario(datos).subscribe(
+    //   data => {
+    //     console.log(data); // Manejo exitoso de la respuesta
+    //     alert('Registro de tramo existoso');
+    //     this.dialogBoxService.closeDialog();
+    //     this.actualizacionTablaService.notificarDialogCerrado();
+    //   },
+    //   error => {
+    //     console.log('Error en la solicitud:', error);
+    //     alert('Error en la solicitud. Consulta la consola para más detalles.');
+    //   }
+    // );
   }
 
   getErrorMessageB(controlName: string): boolean {
@@ -276,6 +305,13 @@ if (this.validaFormulario()) {
   }
 
   validaFormulario(): boolean {
+    if (this.formGroup.get("rfid")?.value != '') {
+        this.validaRfid2(this.formGroup.get("rfid")?.value);
+          if (!this.esValidoRfid) {
+            alert ('El RFID ya existe en el inventario, asigne un valor valido');
+            return false;
+          } 
+    }
 
     if (this.formGroup.get("rfid")?.invalid ||
     this.formGroup.get("numeroParte")?.invalid ||
@@ -297,5 +333,145 @@ if (this.validaFormulario()) {
    }
 
   }
+
+  valDiaInterior(selectedValue: any) {
+    const selectedFraccionExterior = this.diametros.find(diametro => diametro.id === selectedValue);
+
+    console.log('valor de la descripcion del select de diametro: ',selectedFraccionExterior?.diametroFraccion);
+
+    const valor: any = selectedFraccionExterior?.diametroFraccion;
+
+    console.log('diametroexterior: ', this.convertirAFraccion(valor));
+    this.valDi = this.convertirAFraccion(valor);
+
+    if (this.valDe > 0 && this.valDi > 0) {
+      if (this.valDi > this.valDe) {
+          console.log("El diametro interior debe ser menor al diametro mayor")
+          alert('El diametro interior debe ser menor al diametro mayor');
+      }
+  } 
+  } 
+
+  valDiaExterior(selectedValue: any) {
+    const selectedFraccionExterior = this.diametros.find(diametro => diametro.id === selectedValue);
+
+    console.log('valor id del select de diametro: ',selectedValue);
+    console.log('valor de la descripcion del select de diametro: ',selectedFraccionExterior?.diametroFraccion);
+    const valor: any = selectedFraccionExterior?.diametroFraccion;
+
+    console.log('diametroexterior: ', this.convertirAFraccion(valor));
+
+    this.valDe = this.convertirAFraccion(valor);
+
+    if (this.valDe > 0 && this.valDi > 0) {
+        if (this.valDi > this.valDe) {
+            console.log("El diametro interior debe ser menor al diametro mayor")
+            alert('El diametro interior debe ser menor al diametro mayor');
+           
+        }
+    } 
+
+  }  
+
+  convertirAFraccion(cadena: string): number {
+    const partes = cadena.split(" ");
+    if (partes.length !== 2 || !partes[1].includes("/")) {
+       return parseInt(cadena);
+    }
+
+    // const partes = cadena.split(" ");
+    const entero = parseInt(partes[0]);
+    const fraccionPartes = partes[1].split("/");
+    const numerador = parseInt(fraccionPartes[0]);
+    const denominador = parseInt(fraccionPartes[1]);
+  
+    return entero + numerador / denominador;
+  }
+
+
+esRfidValido(event: Event): Observable<boolean> {
+
+ const rfidInput = event.target as HTMLInputElement;
+ const rfidValue = rfidInput.value;
+ if (rfidValue !== '') {
+  return this.reginventario.validaRfid(rfidValue).pipe(
+    catchError(error => {
+      console.log('Error en la solicitud objeto general:', error.error);
+      alert('Error en la petición de servicios APIs');
+      throw error;
+    }),
+    map(data => {
+      const valido = data;
+      console.log('valor de valido:', valido);
+      if (!valido) {
+        console.log('entro en el if no válido');
+        return false;
+      } else {
+        console.log('entro en el if válido');
+        return true;
+      }
+    })
+  );
+} else {
+
+  return of(false);
+}
+  }
+
+validaRfid(event: Event) {
+  const rfidInput = event.target as HTMLInputElement;
+  const rfidValue = rfidInput.value;
+  this.valRfid = rfidValue;
+  this.esRfidValido(event).subscribe(result => {
+    this.esValidoRfid = result;
+    if (this.valRfid != '') {
+      if (!this.esValidoRfid) {
+        alert ('El RFID ya existe en el inventario, asigne un valor valido');
+      }
+    } else {
+      this.valRfid = '';
+    }
+
+  });
+}
+
+esRfidValido2(rfid: string): Observable<boolean> {
+  const rfidValue = rfid;
+  if (rfidValue !== '') {
+   return this.reginventario.validaRfid(rfidValue).pipe(
+     catchError(error => {
+       console.log('Error en la solicitud objeto general:', error.error);
+       alert('Error en la petición de servicios APIs');
+       throw error;
+     }),
+     map(data => {
+       const valido = data;
+       console.log('valor de valido:', valido);
+       if (!valido) {
+         console.log('entro en el if no válido');
+         return false;
+       } else {
+         console.log('entro en el if válido');
+         return true;
+       }
+     })
+   );
+ } else {
+ 
+   return of(false);
+ }
+   }
+ 
+ validaRfid2(rfid: string) {
+
+   this.valRfid = rfid;
+   this.esRfidValido2(rfid).subscribe(result => {
+     this.esValidoRfid = result;
+
+ 
+   });
+ }
+ 
+
 
 }
