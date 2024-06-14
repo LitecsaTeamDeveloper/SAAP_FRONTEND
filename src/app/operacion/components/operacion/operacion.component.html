@@ -3,7 +3,8 @@
 
   <img src="../../assets/img/construccion.png" height="autosize" width="autosize">
   </div> -->
-  
+
+<br>
   <div class="row">
   <mat-stepper linear #stepper>
     <mat-step [stepControl]="formMovimiento" [editable]="isEditable">
@@ -12,6 +13,29 @@
 
         <div class="row">
           <div class="row">
+            <br>
+            <div style="display: flex;">
+              <br>
+              <div style="flex: 1;">
+               
+                <mat-form-field class="field-left wide" appearance="outline">
+                  <mat-label>Ubicación</mat-label>
+                  <mat-select formControlName="ubicacionIni" (selectionChange)="onSelectIni($event.value)">
+                    <mat-option *ngFor="let ubi of ubicacion" [value]="ubi.id">{{ ubi.ubicacion }} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div *ngIf="esPozoIni" style="flex: 1;">
+                <mat-form-field class="field-left wide" appearance="outline">
+                  <mat-label>Pozo</mat-label>
+                  <mat-select formControlName="pozoIni">
+                     <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
+                  </mat-select>
+                </mat-form-field>
+              </div>
+           
+            </div>
+
           <mat-form-field appearance="outline" style="width: 30%;">
             <!-- <mat-label>Buscar</mat-label> -->
             <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." >
@@ -122,15 +146,15 @@
               <div style="flex: 1;">
                 <mat-form-field class="field-left wide" appearance="outline">
                   <mat-label>Ubicación</mat-label>
-                  <mat-select formControlName="ubicacion" (selectionChange)="onSelect($event.value)">
+                  <mat-select formControlName="ubicacionFin" (selectionChange)="onSelectFin($event.value)">
                     <mat-option *ngFor="let ubi of ubicacion" [value]="ubi.id">{{ ubi.ubicacion }} </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div *ngIf="esPozo" style="flex: 1;">
+              <div *ngIf="esPozoFin" style="flex: 1;">
                 <mat-form-field class="field-left wide" appearance="outline">
                   <mat-label>Pozo</mat-label>
-                  <mat-select formControlName="pozo">
+                  <mat-select formControlName="pozoFin">
                      <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
                   </mat-select>
                 </mat-form-field>

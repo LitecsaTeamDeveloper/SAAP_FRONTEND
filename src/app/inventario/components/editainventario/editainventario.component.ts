@@ -97,7 +97,19 @@ export class EditainventarioComponent implements OnInit {
             alert('El diametro interior debe ser menor al diametro mayor');
           return;
         }
-      } 
+      } else {
+        this.valDi = 0;
+        this.valDe = 0;
+        this.valDiaInterior2(this.formGroup.get("diametroInterior")?.value);
+        this.valDiaExterior2(this.formGroup.get("diametroExterior")?.value);
+
+        if (this.valDi > this.valDe) {
+              console.log("El diametro interior debe ser menor al diametro mayor")
+              alert('El diametro interior debe ser menor al diametro mayor');
+            return;
+          }
+   
+      }
       
       if (!(this.formGroup.get("esValido")?.value) && (this.getErrorMessageB("bending") || this.formGroup.get("bending")?.invalid) ) {
         alert("El valor de bending es incorrecto");
@@ -296,7 +308,7 @@ export class EditainventarioComponent implements OnInit {
     ).subscribe(
       data => {
         console.log(data); // Manejo exitoso de la respuesta
-        alert('Tramo actualizado con Exito”,');
+        alert('Tramo actualizado con Éxito');
         this.dialogBoxService.closeDialog();
         this.actualizacionTablaService.notificarDialogCerrado();
       }
@@ -436,5 +448,32 @@ const datos = datosorigin;
   
     return entero + numerador / denominador;
   }
+
+
+  valDiaInterior2(selectedValue: any) {
+    const selectedFraccionExterior = this.diametros.find(diametro => diametro.id === selectedValue);
+
+    console.log('valor de la descripcion del select de diametro: ',selectedFraccionExterior?.diametroFraccion);
+
+    const valor: any = selectedFraccionExterior?.diametroFraccion;
+
+    console.log('diametroexterior: ', this.convertirAFraccion(valor));
+    this.valDi = this.convertirAFraccion(valor);
+
+
+  } 
+
+  valDiaExterior2(selectedValue: any) {
+    const selectedFraccionExterior = this.diametros.find(diametro => diametro.id === selectedValue);
+
+    console.log('valor id del select de diametro: ',selectedValue);
+    console.log('valor de la descripcion del select de diametro: ',selectedFraccionExterior?.diametroFraccion);
+    const valor: any = selectedFraccionExterior?.diametroFraccion;
+
+    console.log('diametroexterior: ', this.convertirAFraccion(valor));
+
+    this.valDe = this.convertirAFraccion(valor);
+
+  }  
 
 }

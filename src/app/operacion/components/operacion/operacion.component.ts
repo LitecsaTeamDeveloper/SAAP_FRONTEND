@@ -61,8 +61,8 @@ export class OperacionComponent implements OnInit {
   // });
   isEditable = true;
 
-  esPozo = false;
-
+  esPozoIni = false;
+  esPozoFin = false;
 
   // displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
   // dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
@@ -93,10 +93,15 @@ export class OperacionComponent implements OnInit {
   ngOnInit(): void {
   
     this.formMovimiento = this.formBuilder.group({
-      ubicacion: ['', Validators.required],
-      pozo:['', Validators.compose([
+      ubicacionIni: ['', Validators.required],
+      pozoIni:['', Validators.compose([
         Validators.required
       ])],
+      ubicacionFin: ['', Validators.required],
+      pozoFin:['', Validators.compose([
+        Validators.required
+      ])],
+
     });
     this.companiaUsuario = this.sharedService.companiaUsuario;
     this.getInventarioDisponible(this.companiaUsuario);
@@ -154,22 +159,35 @@ export class OperacionComponent implements OnInit {
     const filasSeleccionadas = this.selection.selected;
     const idInventarios = filasSeleccionadas.map(fila => fila.idInventario);
     const nombres = filasSeleccionadas.map(fila => fila.rfid);
-  
-    // console.log('ID Inventarios seleccionados:', JSON.stringify(idInventarios));
-    // console.log('Nombres seleccionados:', JSON.stringify(nombres));
-    const objetoJSON = idInventarios.map(id => ({ idinventario: id }));
+
+    const objetoJSON = idInventarios.map(id => ({ id: id }));
 
     const objetoJSONString = JSON.stringify(objetoJSON);
     this.tubosSeleccionados = objetoJSONString;
     console.log(objetoJSONString);
     console.log('TUBOS SELECCIONADOS: ',this.tubosSeleccionados);
+    console.log('TUBOS SELECCIONADOS en json parse: ',JSON.parse(this.tubosSeleccionados));
+
+    const ubicacion = this.formMovimiento.get("ubicacionFin")?.value;
+    const pozo =  this.formMovimiento.get("pozoFin")?.value != 0? this.formMovimiento.get("pozoFin")?.value: 0;
+
+    const tubos = JSON.parse(this.tubosSeleccionados)
+
+    const resultado = {
+    idinventario: tubos,
+    idUbicacion: ubicacion,
+    idPozo: pozo
+    };
+
+    console.log('OBJETO TUBOS DISPONIBLES: ',resultado);
+    console.log('OBJETO TUBOS DISPONIBLES con JSON.stringify: ',JSON.stringify(resultado));
 
     if (this.tubosSeleccionados === "[]") {
       console.log("El arreglo de tubos seleccionados está vacío.");
       alert('No ha seleccionado ningun tubo para su asignación correspondiente');
     } else {
       console.log("El arreglo de tubos seleccionados contiene elementos.");
-      this.openConfirmacionDialog(this.tubosSeleccionados);
+      this.openConfirmacionDialog(resultado);
 
     }
   }
@@ -210,22 +228,34 @@ export class OperacionComponent implements OnInit {
     );
   } 
 
-  onSelect(selectedValue: any) {
+  onSelectIni(selectedValue: any) {
     const selectedUbicacion = this.ubicacion.find(ubi => ubi.id === selectedValue);
 
     console.log('valor id del select de ubicacion: ',selectedValue);
     console.log('valor de la descripcion del select de ubicacion: ',selectedUbicacion?.ubicacion);
 
     if (selectedValue === 3) {
-        this.esPozo = true
+        this.esPozoIni = true
     }else {
-      this.esPozo = false
+      this.esPozoIni = false
     }
   }
 
+  onSelectFin(selectedValue: any) {
+    const selectedUbicacion = this.ubicacion.find(ubi => ubi.id === selectedValue);
+
+    console.log('valor id del select de ubicacion: ',selectedValue);
+    console.log('valor de la descripcion del select de ubicacion: ',selectedUbicacion?.ubicacion);
+
+    if (selectedValue === 3) {
+        this.esPozoFin = true
+    }else {
+      this.esPozoFin = false
+    }
+  }
 
   openConfirmacionDialog(dato: any): void {
-    console.log(dato);
+
     const options = {
       title: 'SAAP',
       message: `¿Esta seguro de realizar esta asignación de tuberias? `,
@@ -236,7 +266,7 @@ export class OperacionComponent implements OnInit {
     this.alertService.open(options);
     this.alertService.confirmed().subscribe(confirmed => {
       if (confirmed) {
-        console.log('TUBOS SELECCIONADOS: ',this.tubosSeleccionados);
+        console.log('metodo para guardado TUBOS SELECCIONADOS: ',dato);
         // this.metodoparaguardado(this.tubosSeleccionados);
         
       }
