@@ -6,3 +6,60 @@
     min-height: 100vh;
   }
 
+
+  .button-white-text {
+    background: #27588b;
+    color: white;
+  }
+
+  .active-step {
+    background-color: darkslategrey !important;
+    color: white !important;
+  }
+
+
+  ::ng-deep .mat-primary.mat-step-header.mat-step-label {
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+/* Change Label Color When Tab is Selected */
+
+  ::ng-deep .mat-primary.mat-step-header .mat-step-label-selected {
+    color:#0665d2 !important;
+  }
+ 
+/* Change Stepper Step-Box Active Text When Tab is Done */
+  ::ng-deep .mat-primary.mat-step-header .mat-step-label.mat-step-label-active { color:
+    #bdbdbd;
+  /* font-weight: 600 !important; */
+  }
+
+   /* Change Stepper Step Icons Circle */
+  ::ng-deep .mat-primary.mat-step-header .mat-step-icon {
+  background-color: #bdbdbd;
+  color: #fff;
+  transition: all 0.5s ease-in-out;
+  margin: auto 7px auto 0;
+  outline: 2px solid #bdbdbd;
+  outline-offset: 1px;
+
+  }
+
+   /* Change Stepper Step Selected Icons Circle */
+  ::ng-deep .mat-primary.mat-step-header .mat-step-icon-sele {
+  background-color:#bdbdbd;
+  color: #fff;
+  transition: all 0.5s ease-in-out;
+  margin: auto 7px auto 0;
+  outline: 2px solid #bdbdbd;
+  outline-offset: 1px;
+  }
+  
+
+  ::ng-deep .mat-primary.mat-step-header .mat-step-icon-selected {
+    background-color:#1b85ff;
+    color: #fff;
+    outline: 2px solid #1b85ff;
+    outline-offset: 2px;
+  }

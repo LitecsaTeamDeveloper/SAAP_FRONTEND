@@ -10,7 +10,9 @@ export class AppComponent {
   title = 'saap';
   isLoading: boolean = false;
 
-  constructor(private loadingService: LoadingService) { }
+  constructor(private loadingService: LoadingService) {
+    localStorage.setItem('IdCompany', '0');
+   }
 
   ngOnInit() {
     this.loadingService.loading$.subscribe(loading => {

@@ -1,1 +1,160 @@
-<p>movimientotp works!</p>
+
+    <form [formGroup]="formMovimiento">
+      <div class="row">
+        <div class="row">
+          <br>
+          <div style="display: flex;">
+            <br>
+            <div style="flex: 1;">
+             
+              <mat-form-field class="field-left wide" appearance="outline">
+                <mat-label>Ubicación</mat-label>
+                <mat-select formControlName="ubicacionIni" (selectionChange)="onSelectIni($event.value)">
+                  <mat-option *ngFor="let ubi of ubicacion" [value]="ubi.id">{{ ubi.ubicacion }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div *ngIf="esPozoIni" style="flex: 1;">
+              <mat-form-field class="field-left wide" appearance="outline">
+                <mat-label>Pozo</mat-label>
+                <mat-select formControlName="pozoIni">
+                   <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
+                </mat-select>
+              </mat-form-field>
+            </div>
+         
+          </div>
+
+        <mat-form-field appearance="outline" style="width: 30%;">
+          <!-- <mat-label>Buscar</mat-label> -->
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." >
+          <button matSuffix mat-icon-button color="primary">
+            <mat-icon class="search-icon" >search</mat-icon>
+            <ng-template #elseBlock>
+              <mat-icon class="search-icon">close</mat-icon>
+            </ng-template>
+          </button>
+        </mat-form-field>  
+        </div>
+
+        &nbsp;
+        </div>
+    
+        <div class="row">
+
+          <div class="table-container mat-elevation-z8">
+            <mat-card>
+            
+              <table mat-table [dataSource]="dataSource" class="mat-table">
+                <!-- Columna ID Inventario -->
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef> ID </th>
+                  <td mat-cell *matCellDef="let inventario"> {{ inventario.idInventario }} </td>
+                </ng-container>
+            
+                <!-- Columna Nombre -->
+                <ng-container matColumnDef="rfid">
+                  <th mat-header-cell *matHeaderCellDef> RFID </th>
+                  <td mat-cell *matCellDef="let inventario"> {{ inventario.rfid }} </td>
+                </ng-container>
+            
+                <!-- Columna ID numero parte -->
+                <ng-container matColumnDef="idnumeroparte">
+                  <th mat-header-cell *matHeaderCellDef> ID Numero parte </th>
+                  <td mat-cell *matCellDef="let inventario"> {{ inventario[columnIndex.idNumeroParte] }} </td>
+                </ng-container>
+          
+                <!-- Columna Numero de parte -->
+                <ng-container matColumnDef="numeroparte">
+                  <th mat-header-cell *matHeaderCellDef> Numero parte </th>
+                  <td mat-cell *matCellDef="let inventario"> {{ inventario.numeroParte }} </td>
+                </ng-container>
+            
+                <!-- Columna Descripcion -->
+                <ng-container matColumnDef="descripcion">
+                  <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                  <td mat-cell *matCellDef="let inventario"> {{ inventario.descripcion }} </td>
+                </ng-container>
+          
+                <!-- Columna Diametro interior -->
+                <ng-container matColumnDef="di">
+                  <th mat-header-cell *matHeaderCellDef> Diametro Interior </th>
+                  <td mat-cell *matCellDef="let inventario"> {{ inventario.diametroInteriorFraccion }} </td>
+                </ng-container>
+
+                  <!-- Columna Diametro exterior -->
+                <ng-container matColumnDef="de">
+                <th mat-header-cell *matHeaderCellDef> Diametro Exterior </th>
+                <td mat-cell *matCellDef="let inventario"> {{ inventario.diametroExteriorFraccion }} </td>
+                </ng-container> 
+
+                <!-- Columna Longitud -->
+                <ng-container matColumnDef="longitud">
+                  <th mat-header-cell *matHeaderCellDef> Longitud </th>
+                  <td mat-cell *matCellDef="let inventario"> {{ inventario.longitud }} </td>
+                </ng-container>
+          
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [aria-label]="checkboxLabel()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+                <!-- Agregar columnas a la tabla -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+          
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          aria-label="Paginado de tuberia de perforacion">
+          </mat-paginator>
+          
+          </mat-card>
+              
+            </div>
+          </div>
+          <br>
+          <!-- <div class="formaboton">
+            <button mat-flat-button color="primary" (click)="getSeleccionados()">+ Agregar tramo</button>
+          </div> -->
+
+          <div style="display: flex;">
+            <div style="flex: 1;">
+              <mat-form-field class="field-left wide" appearance="outline">
+                <mat-label>Ubicación</mat-label>
+                <mat-select formControlName="ubicacionFin" (selectionChange)="onSelectFin($event.value)">
+                  <mat-option *ngFor="let ubi of ubicacion" [value]="ubi.id">{{ ubi.ubicacion }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div *ngIf="esPozoFin" style="flex: 1;">
+              <mat-form-field class="field-left wide" appearance="outline">
+                <mat-label>Pozo</mat-label>
+                <mat-select formControlName="pozoFin">
+                   <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div style="flex: 1;">
+              <button mat-flat-button color="primary" (click)="getSeleccionados()"> Mover TP </button>
+            </div>
+          
+          </div>            
+
+    <div>
+        <button mat-flat-button class="button-white-text" matStepperNext>Siguiente</button>
+      </div>
+    </form>

@@ -45,5 +45,10 @@ private urlApi = API_URL;
 
     public getCatPozo(): Observable<any> {
         return this.httpClient.get<any>(`${this.urlApi}/Catalogos/listapozo`);
+    }   
+    
+    public getCatEtapa(): Observable<any> {
+        return this.httpClient.get<any>(`${this.urlApi}/Catalogos/listaetapa`);
     }    
+
 }

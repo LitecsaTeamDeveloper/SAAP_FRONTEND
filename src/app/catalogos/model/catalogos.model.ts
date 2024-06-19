@@ -37,3 +37,8 @@ export interface NumeroParte {
     id:  number; 
     pozo:  string; 
   }
+
+  export interface Etapa {
+    id:  number; 
+    etapa:  string; 
+  }

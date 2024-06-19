@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
         if (this.usuarios.valido) {
           this.sharedService.nombreUsuario = this.usuarios.nombre;
           this.sharedService.companiaUsuario = this.usuarios.idCompania;
+          localStorage.setItem('IdCompany', this.usuarios.idCompania.toString());
           this.router.navigate(['home']);
         } else {
           this.error();

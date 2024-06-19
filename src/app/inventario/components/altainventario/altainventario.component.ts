@@ -31,14 +31,18 @@ export class AltainventarioComponent implements OnInit {
   valDe: any = 0;
   esValidoRfid: boolean = true;
   valRfid: string = '';
+  fechaLimite = new Date();
 
   constructor(private formBuilder: FormBuilder, private dialogBoxService: DialogBoxService
               , private catalogos: CatalogosService, private sharedService: SharedService
               , private reginventario: InventarioService, private actualizacionTablaService: ActualizacionTablaService
-  ) { }
+  ) {
+    this.fechaLimite.setDate(this.fechaLimite.getDate() + 1);
+   }
 
   ngOnInit() {
- 
+
+    console.log('ide compania con localstorage: ', localStorage.getItem('IdCompany'));
     this.formGroup = this.formBuilder.group({
       numeroParte: ['', Validators.required],
       rfid: ['', Validators.required],
@@ -85,7 +89,7 @@ export class AltainventarioComponent implements OnInit {
 if (this.validaFormulario()) {
 
     if (this.valDe > 0 && this.valDi > 0) {
-      if (this.valDi > this.valDe) {
+      if (this.valDi >= this.valDe) {
           console.log("El diametro interior debe ser menor al diametro mayor")
           alert('El diametro interior debe ser menor al diametro mayor');
         return;
@@ -96,7 +100,7 @@ if (this.validaFormulario()) {
       alert("El valor de bending es incorrecto");
     } else {
       const datostubos = {
-        "idInventario": this.sharedService.edicionInventario,
+        "idInventario": 0,
         "rfid": this.formGroup.get("rfid")?.value,
         "idNumeroParte": this.formGroup.get("numeroParte")?.value,
         "idCompania": this.sharedService.companiaUsuario,
@@ -345,7 +349,7 @@ if (this.validaFormulario()) {
     this.valDi = this.convertirAFraccion(valor);
 
     if (this.valDe > 0 && this.valDi > 0) {
-      if (this.valDi > this.valDe) {
+      if (this.valDi >= this.valDe) {
           console.log("El diametro interior debe ser menor al diametro mayor")
           alert('El diametro interior debe ser menor al diametro mayor');
       }
@@ -364,7 +368,7 @@ if (this.validaFormulario()) {
     this.valDe = this.convertirAFraccion(valor);
 
     if (this.valDe > 0 && this.valDi > 0) {
-        if (this.valDi > this.valDe) {
+        if (this.valDi >= this.valDe) {
             console.log("El diametro interior debe ser menor al diametro mayor")
             alert('El diametro interior debe ser menor al diametro mayor');
            

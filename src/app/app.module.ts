@@ -28,6 +28,7 @@ import { MantenimientoComponent } from './mantenimiento/components/mantenimiento
 import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
 import { ReportesComponent } from './reportes/components/reportes/reportes.component';
 import { MovimientotpComponent } from './operacion/components/movimientotp/movimientotp.component';
+import { TallyprogramadoComponent } from './operacion/components/tallyprogramado/tallyprogramado.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { MovimientotpComponent } from './operacion/components/movimientotp/movim
     MantenimientoComponent,
     DashboardComponent,
     ReportesComponent,
-    MovimientotpComponent
+    MovimientotpComponent,
+    TallyprogramadoComponent
   ],
   imports: [
     BrowserModule,

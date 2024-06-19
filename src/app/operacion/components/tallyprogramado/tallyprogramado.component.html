@@ -1,0 +1,90 @@
+<form [formGroup]="formtally">
+    <div class="row">
+      <div class="row">
+        <br>
+        <div style="display: flex;">
+          <br>
+
+          <div style="flex: 1;">
+            <mat-form-field class="field-left wide" appearance="outline">
+              <mat-label>Pozo</mat-label>
+              <mat-select formControlName="pozo">
+                 <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div style="flex: 1;">
+            <mat-form-field class="field-left wide" appearance="outline">
+              <mat-label>Etapa</mat-label>
+              <mat-select formControlName="etapa">
+                 <mat-option *ngFor="let eta of etapa" [value]="eta.id">{{ eta.etapa }}</mat-option>  
+              </mat-select>
+            </mat-form-field>
+          </div>          
+       
+        </div>
+
+      <!-- <mat-form-field appearance="outline" style="width: 30%;">
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." >
+        <button matSuffix mat-icon-button color="primary">
+          <mat-icon class="search-icon" >search</mat-icon>
+          <ng-template #elseBlock>
+            <mat-icon class="search-icon">close</mat-icon>
+          </ng-template>
+        </button>
+      </mat-form-field>   -->
+      </div>
+
+      &nbsp;
+      </div>
+  
+      <div class="row">
+
+        <div class="table-container mat-elevation-z8">
+          <mat-card>
+          
+<!-- aqui va la tabla -->
+        
+        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Paginado de tuberia de perforacion">
+        </mat-paginator> -->
+        
+        </mat-card>
+            
+          </div>
+        </div>
+        <br>
+        <!-- <div class="formaboton">
+          <button mat-flat-button color="primary" (click)="getSeleccionados()">+ Agregar tramo</button>
+        </div> -->
+
+        <!-- <div style="display: flex;">
+          <div style="flex: 1;">
+            <mat-form-field class="field-left wide" appearance="outline">
+              <mat-label>Ubicación</mat-label>
+              <mat-select formControlName="ubicacionFin" (selectionChange)="onSelectFin($event.value)">
+                <mat-option *ngFor="let ubi of ubicacion" [value]="ubi.id">{{ ubi.ubicacion }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="esPozoFin" style="flex: 1;">
+            <mat-form-field class="field-left wide" appearance="outline">
+              <mat-label>Pozo</mat-label>
+              <mat-select formControlName="pozoFin">
+                 <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div style="flex: 1;">
+            <button mat-flat-button color="primary" (click)="getSeleccionados()"> Mover TP </button>
+          </div>
+        
+        </div>             -->
+
+        <div>
+            <button mat-flat-button class="button-white-text" matStepperPrevious>Atras</button> &nbsp;
+            <button mat-flat-button class="button-white-text" matStepperNext>Siguiente</button>
+          </div>
+  </form>

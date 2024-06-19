@@ -27,11 +27,14 @@ export class EditainventarioComponent implements OnInit {
   isChecked = true;
   valDi: any = 0;
   valDe: any = 0;
+  fechaLimite = new Date();
 
   constructor(private formBuilder: FormBuilder, private dialogBoxService: DialogBoxService
               , private catalogos: CatalogosService, private sharedService: SharedService
               , private reginventario: InventarioService, private actualizacionTablaService: ActualizacionTablaService
-  ) { }
+  ) { 
+    this.fechaLimite.setDate(this.fechaLimite.getDate() + 1);
+  }
 
   ngOnInit() {
  
@@ -92,7 +95,7 @@ export class EditainventarioComponent implements OnInit {
     if (this.validaFormulario()) {
 
       if (this.valDe > 0 && this.valDi > 0) {
-        if (this.valDi > this.valDe) {
+        if (this.valDi >= this.valDe) {
             console.log("El diametro interior debe ser menor al diametro mayor")
             alert('El diametro interior debe ser menor al diametro mayor');
           return;
@@ -103,7 +106,7 @@ export class EditainventarioComponent implements OnInit {
         this.valDiaInterior2(this.formGroup.get("diametroInterior")?.value);
         this.valDiaExterior2(this.formGroup.get("diametroExterior")?.value);
 
-        if (this.valDi > this.valDe) {
+        if (this.valDi >= this.valDe) {
               console.log("El diametro interior debe ser menor al diametro mayor")
               alert('El diametro interior debe ser menor al diametro mayor');
             return;
@@ -406,7 +409,7 @@ const datos = datosorigin;
     this.valDi = this.convertirAFraccion(valor);
 
     if (this.valDe > 0 && this.valDi > 0) {
-      if (this.valDi > this.valDe) {
+      if (this.valDi >= this.valDe) {
           console.log("El diametro interior debe ser menor al diametro mayor")
           alert('El diametro interior debe ser menor al diametro mayor');
       }
@@ -425,7 +428,7 @@ const datos = datosorigin;
     this.valDe = this.convertirAFraccion(valor);
 
     if (this.valDe > 0 && this.valDi > 0) {
-        if (this.valDi > this.valDe) {
+        if (this.valDi >= this.valDe) {
             console.log("El diametro interior debe ser menor al diametro mayor")
             alert('El diametro interior debe ser menor al diametro mayor');
            
