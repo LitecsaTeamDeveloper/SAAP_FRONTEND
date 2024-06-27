@@ -17,7 +17,7 @@
             <div *ngIf="esPozoIni" style="flex: 1;">
               <mat-form-field class="field-left wide" appearance="outline">
                 <mat-label>Pozo</mat-label>
-                <mat-select formControlName="pozoIni">
+                <mat-select formControlName="pozoIni" (selectionChange)="onSelectIniPozo($event.value)">
                    <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
                 </mat-select>
               </mat-form-field>
@@ -143,13 +143,13 @@
             <div *ngIf="esPozoFin" style="flex: 1;">
               <mat-form-field class="field-left wide" appearance="outline">
                 <mat-label>Pozo</mat-label>
-                <mat-select formControlName="pozoFin">
+                <mat-select formControlName="pozoFin" (selectionChange)="onSelectFinPozo($event.value)">
                    <mat-option *ngFor="let pz of pozo" [value]="pz.id">{{ pz.pozo }}</mat-option>  
                 </mat-select>
               </mat-form-field>
             </div>
             <div style="flex: 1;">
-              <button mat-flat-button color="primary" (click)="getSeleccionados()"> Mover TP </button>
+              <button mat-flat-button color="primary" (click)="moverTP()"> Mover TP </button>
             </div>
           
           </div>            

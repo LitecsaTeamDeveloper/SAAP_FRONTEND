@@ -19,3 +19,4 @@ export interface Inventario {
     estatus:  string; 
     fechaIngreso:  Date; 
 }
+

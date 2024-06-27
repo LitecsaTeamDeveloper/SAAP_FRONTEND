@@ -14,6 +14,7 @@ import { catchError } from 'rxjs/operators';
 import {Inventario } from '../../../inventario/model/inventario.model'
 import {Ubicacion, Pozo } from '../../../catalogos/model/catalogos.model'
 import { CatalogosService } from '../../../catalogos/services/catalogos.service';
+import { OperacionService } from '../../services/operacion.service';
 @Component({
   selector: 'app-movimientotp',
   templateUrl: './movimientotp.component.html',
@@ -58,7 +59,7 @@ export class MovimientotpComponent implements OnInit  {
 
   constructor(private formBuilder: FormBuilder
     , private alertService: AlertService
-    , private inventarioServices: InventarioService
+    , private operacionServices: OperacionService
     , private dialogBox: MatDialog
     , private sharedService: SharedService
     , private catalogos: CatalogosService
@@ -80,27 +81,33 @@ applyFilter(event: Event) {
 ngOnInit(): void {
 
   this.formMovimiento = this.formBuilder.group({
-    ubicacionIni: ['', Validators.required],
+    ubicacionIni: [''],
     pozoIni:['', Validators.compose([
-      Validators.required
+      
     ])],
-    ubicacionFin: ['', Validators.required],
+    ubicacionFin: [''],
     pozoFin:['', Validators.compose([
-      Validators.required
+      
     ])],
 
   });
   this.companiaUsuario = this.sharedService.companiaUsuario;
-  this.getInventarioDisponible(this.companiaUsuario);
+//  this.getInventarioDisponible(this.companiaUsuario);
   this.getUbicacion();
   this.getPozo();
 
   
 }
 
-getInventarioDisponible(compania: number) {
+getInventarioDisponible(idcompania: number, idubicacion: number, idpozo: number) {
+  const cuerpo = {
+    "idCompania": idcompania,
+    "idUbicacion": idubicacion,
+    "idPozo": idpozo
+  };
+
   let listainventario: any;
-  this.inventarioServices.getInventarioDisponible(compania).pipe(
+  this.operacionServices.getInventarioDisponible(cuerpo).pipe(
     catchError(error => {
       // Manejo del error
       console.log('Error en la solicitud objeto general:', error.error);
@@ -110,6 +117,8 @@ getInventarioDisponible(compania: number) {
   ).subscribe(
     data => {
       this.datainventario = data;
+      console.log('data: ', data);
+      console.log('datainventario: ', this.datainventario);
       this.dataSource.data = this.datainventario;
       console.log(this.datainventario);
     }
@@ -120,6 +129,8 @@ getInventarioDisponible(compania: number) {
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
+    console.log('numSelected: ', numSelected);
+    console.log('numRows: ', numRows);
     return numSelected === numRows;
   }
 
@@ -171,15 +182,40 @@ obtenerFilasSeleccionadas() {
 
   if (this.tubosSeleccionados === "[]") {
     console.log("El arreglo de tubos seleccionados está vacío.");
-    alert('No ha seleccionado ningun tubo para su asignación correspondiente');
+    alert('No ha seleccionado ningun tubo para su movimiento correspondiente');
   } else {
     console.log("El arreglo de tubos seleccionados contiene elementos.");
     this.openConfirmacionDialog(resultado);
-
   }
 }
 
-getSeleccionados() {
+moverTP() {
+
+if (this.formMovimiento.get('ubicacionIni')?.value == '' || this.formMovimiento.get('ubicacionFin')?.value == '') {
+  alert('Seleccione el origen y destino de los tubos a mover');
+  return;
+
+}
+
+if (this.formMovimiento.get('ubicacionIni')?.value == 3) {
+  if (this.formMovimiento.get('ubicacionFin')?.value == 3) {
+    if (this.formMovimiento.get('pozoIni')?.value === this.formMovimiento.get('pozoFin')?.value) {
+      alert('No se permite mover tubos al mismo pozo');
+      this.formMovimiento.get('pozoFin')?.setValue('');
+      return;
+    } 
+}
+
+} else {
+  if (this.formMovimiento.get('ubicacionIni') === this.formMovimiento.get('ubicacionFin')?.value) {
+    alert('No se permite mover tubos a la misma ubicación');
+    this.formMovimiento.get('ubicacionFin')?.setValue('');
+    return;
+}
+}
+
+
+
     this.obtenerFilasSeleccionadas();
 }
 
@@ -220,12 +256,29 @@ onSelectIni(selectedValue: any) {
 
   console.log('valor id del select de ubicacion: ',selectedValue);
   console.log('valor de la descripcion del select de ubicacion: ',selectedUbicacion?.ubicacion);
+  
+  this.dataSource.data = [];
 
   if (selectedValue === 3) {
+    this.formMovimiento.get("pozoIni")?.setValue('');
       this.esPozoIni = true
   }else {
     this.esPozoIni = false
+
+    this.getInventarioDisponible(this.sharedService.companiaUsuario, selectedValue, 0);
   }
+}
+
+onSelectIniPozo(selectedValue: any) {
+  const selectedUbicacion = this.pozo.find(poz => poz.id === selectedValue);
+
+  console.log('valor id del select de pozo inicial: ',selectedValue);
+  console.log('valor de la descripcion del select de pozo inicial: ',selectedUbicacion?.pozo);
+  
+  this.dataSource.data = [];
+
+  this.getInventarioDisponible(this.sharedService.companiaUsuario, this.formMovimiento.get('ubicacionIni')?.value ,selectedValue);
+
 }
 
 onSelectFin(selectedValue: any) {
@@ -234,11 +287,33 @@ onSelectFin(selectedValue: any) {
   console.log('valor id del select de ubicacion: ',selectedValue);
   console.log('valor de la descripcion del select de ubicacion: ',selectedUbicacion?.ubicacion);
 
-  if (selectedValue === 3) {
-      this.esPozoFin = true
-  }else {
-    this.esPozoFin = false
-  }
+  if (selectedValue === this.formMovimiento.get('ubicacionIni')?.value && selectedValue != 3 ) {
+        alert('No se permite mover tubos a la misma ubicación');
+        this.formMovimiento.get('ubicacionFin')?.setValue('');
+        return;
+  }  else {
+
+      if (selectedValue === 3) {
+
+          this.esPozoFin = true
+      }else {
+        
+        this.esPozoFin = false
+      }
+}
+}
+
+onSelectFinPozo(selectedValue: any) {
+  const selectedUbicacion = this.pozo.find(poz => poz.id === selectedValue);
+
+  console.log('valor id del select de pozo fin: ',selectedValue);
+  console.log('valor de la descripcion del select de pozofin: ',selectedUbicacion?.pozo);
+
+  if (selectedValue === this.formMovimiento.get('pozoIni')?.value) {
+        alert('No se permite mover tubos al mismo pozo');
+        this.formMovimiento.get('pozoFin')?.setValue('');
+        return;
+  } 
 }
 
 openConfirmacionDialog(dato: any): void {
@@ -254,11 +329,39 @@ openConfirmacionDialog(dato: any): void {
   this.alertService.confirmed().subscribe(confirmed => {
     if (confirmed) {
       console.log('metodo para guardado TUBOS SELECCIONADOS: ',dato);
-      // this.metodoparaguardado(this.tubosSeleccionados);
+      this.mueveTP(dato);
       
     }
   });
 }
 
+mueveTP(datos: any) {
+  this.operacionServices.regMoverTP(datos).pipe(
+    catchError(error => {
+      console.log('Error en la solicitud:', error);
+      alert('Error en el registro del tramo. Consulta la consola para más detalles.');
+      throw error; // Lanzar el error para que siga propagándose
+    })
+  ).subscribe(
+    data => {
+      console.log(data); // Manejo exitoso de la respuesta
+      alert('Movimiento exitoso de tubos');
+      this.limpiarMovimientoTP();
+    }
+  );    
+
+}
+
+limpiarMovimientoTP() {
+  this.formMovimiento.get('ubicacionIni')?.setValue('');
+  this.formMovimiento.get('ubicacionFin')?.setValue('');
+  this.formMovimiento.get('pozoIni')?.setValue('');
+  this.formMovimiento.get('pozoFin')?.setValue('');
+  this.esPozoIni = false;
+  this.esPozoFin = false;
+  this.dataSource.data = [];
+  this.selection.clear();
+
+}
 
 }
