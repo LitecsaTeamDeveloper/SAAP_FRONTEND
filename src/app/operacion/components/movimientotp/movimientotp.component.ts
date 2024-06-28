@@ -263,8 +263,8 @@ onSelectIni(selectedValue: any) {
     this.formMovimiento.get("pozoIni")?.setValue('');
       this.esPozoIni = true
   }else {
-    this.esPozoIni = false
-
+      this.esPozoIni = false
+      this.formMovimiento.get('pozoIni')?.setValue('');
     this.getInventarioDisponible(this.sharedService.companiaUsuario, selectedValue, 0);
   }
 }
@@ -297,7 +297,7 @@ onSelectFin(selectedValue: any) {
 
           this.esPozoFin = true
       }else {
-        
+        this.formMovimiento.get('pozoFin')?.setValue('');
         this.esPozoFin = false
       }
 }
@@ -309,11 +309,14 @@ onSelectFinPozo(selectedValue: any) {
   console.log('valor id del select de pozo fin: ',selectedValue);
   console.log('valor de la descripcion del select de pozofin: ',selectedUbicacion?.pozo);
 
-  if (selectedValue === this.formMovimiento.get('pozoIni')?.value) {
-        alert('No se permite mover tubos al mismo pozo');
-        this.formMovimiento.get('pozoFin')?.setValue('');
-        return;
-  } 
+  if (this.formMovimiento.get('ubicacionFin')?.value === 3 ) {
+    if (selectedValue === this.formMovimiento.get('pozoIni')?.value) {
+      alert('No se permite mover tubos al mismo pozo');
+      this.formMovimiento.get('pozoFin')?.setValue('');
+      return;
+} 
+}
+
 }
 
 openConfirmacionDialog(dato: any): void {
