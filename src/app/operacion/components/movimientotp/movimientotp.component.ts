@@ -166,15 +166,18 @@ obtenerFilasSeleccionadas() {
   console.log('TUBOS SELECCIONADOS: ',this.tubosSeleccionados);
   console.log('TUBOS SELECCIONADOS en json parse: ',JSON.parse(this.tubosSeleccionados));
 
-  const ubicacion = this.formMovimiento.get("ubicacionFin")?.value;
-  const pozo =  this.formMovimiento.get("pozoFin")?.value != 0? this.formMovimiento.get("pozoFin")?.value: 0;
-
+  const idUbicacionOri = this.formMovimiento.get("ubicacionIni")?.value;
+  const idUbicacionDest = this.formMovimiento.get("ubicacionFin")?.value;
+  const pozoIni =  this.formMovimiento.get("pozoIni")?.value != 0? this.formMovimiento.get("pozoIni")?.value: 0;
+  const pozoFin =  this.formMovimiento.get("pozoFin")?.value != 0? this.formMovimiento.get("pozoFin")?.value: 0;
   const tubos = JSON.parse(this.tubosSeleccionados)
 
   const resultado = {
   idinventario: tubos,
-  idUbicacion: ubicacion,
-  idPozo: pozo
+  idUbicacionOri: idUbicacionOri,
+  idUbicacionDest: idUbicacionDest,
+  idPozoOri: pozoIni,
+  idPozoDest: pozoFin
   };
 
   console.log('OBJETO TUBOS DISPONIBLES: ',resultado);
@@ -252,6 +255,7 @@ getPozo() {
 } 
 
 onSelectIni(selectedValue: any) {
+  this.selection.clear();
   const selectedUbicacion = this.ubicacion.find(ubi => ubi.id === selectedValue);
 
   console.log('valor id del select de ubicacion: ',selectedValue);
